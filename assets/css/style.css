@@ -1,0 +1,771 @@
+        :root {
+            --celeste: #75AADB;
+            --marino: #1F4E79;
+            --oro: #F6B40E;
+            --rosa: #E0457B;
+            --crema: #FFF8EC;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden
+        }
+
+        body {
+            font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+            color: var(--marino);
+            background: #CFE6F7
+        }
+
+        button {
+            font-family: inherit
+        }
+
+        button:focus-visible,
+        #gate:focus-visible,
+        #ramo:focus-visible {
+            outline: 3px solid var(--marino);
+            outline-offset: 3px
+        }
+
+        #ramo:focus:not(:focus-visible),
+        #gate:focus:not(:focus-visible) {
+            outline: none
+        }
+
+        /* ---------- Etapas ---------- */
+        .etapa {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .9s ease, visibility .9s;
+            background: linear-gradient(180deg, #CFE6F7 0%, #EAF4FB 55%, var(--crema) 100%)
+        }
+
+        .etapa::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: repeating-linear-gradient(90deg, rgba(117, 170, 219, .14) 0 44px, rgba(255, 255, 255, 0) 44px 88px)
+        }
+
+        .etapa.activa {
+            opacity: 1;
+            visibility: visible
+        }
+
+        /* Pantalla de apertura */
+        #gate {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            cursor: pointer;
+            text-align: center;
+            padding: 24px
+        }
+
+        #gate:focus {
+            outline: none
+        }
+
+        #gate svg {
+            width: min(46vw, 190px);
+            animation: gira 24s linear infinite
+        }
+
+        #gate h1 {
+            font-size: clamp(26px, 7.5vw, 36px);
+            font-weight: 700
+        }
+
+        #gate p {
+            font-size: 16px;
+            opacity: .75;
+            animation: late 1.8s ease-in-out infinite
+        }
+
+        @keyframes gira {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes late {
+            50% {
+                opacity: 1;
+                transform: scale(1.06)
+            }
+        }
+
+        /* Intro */
+        #intro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+            padding: 16px
+        }
+
+        #intro>*:not(.trompeta) {
+            position: relative;
+            z-index: 1
+        }
+
+        #intro h2 {
+            font-size: clamp(28px, 9vw, 46px);
+            line-height: 1.1;
+            opacity: 0
+        }
+
+        #intro .nombre {
+            font-size: clamp(44px, 15vw, 80px);
+            font-weight: 800;
+            line-height: 1;
+            color: var(--celeste);
+            text-shadow: 0 3px 0 #fff;
+            opacity: 0
+        }
+
+        #intro .tarta {
+            width: min(56vw, 230px, 32vh);
+            height: auto;
+            scale: 0
+        }
+
+        .edad {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            background: var(--oro);
+            color: #fff;
+            padding: 4px 22px;
+            border-radius: 40px;
+            font-weight: 800;
+            box-shadow: 0 4px 0 #d69a00;
+            opacity: 0
+        }
+
+        .edad b {
+            font-size: clamp(30px, 10vw, 44px)
+        }
+
+        .edad span {
+            font-size: 16px
+        }
+
+        #intro.activa h2 {
+            animation: sube-txt .8s .2s both
+        }
+
+        #intro.activa .nombre {
+            animation: sube-txt .8s .5s both
+        }
+
+        #intro.activa .tarta {
+            animation: pop .7s .9s cubic-bezier(.2, 1.4, .4, 1) both
+        }
+
+        #intro.activa .edad {
+            animation: sube-txt .8s 1.5s both
+        }
+
+        .llama {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            animation: llama .4s ease-in-out infinite alternate
+        }
+
+        @keyframes llama {
+            to {
+                transform: scale(.85, 1.12) rotate(5deg)
+            }
+        }
+
+        .trompeta {
+            position: absolute;
+            bottom: 3vh;
+            width: min(36vw, 190px);
+            translate: 0 140%;
+            z-index: 0
+        }
+
+        .trompeta.izq {
+            left: -1vw
+        }
+
+        .trompeta.der {
+            right: -1vw
+        }
+
+        .trompeta svg {
+            display: block;
+            width: 100%;
+            height: auto
+        }
+
+        .trompeta.izq svg {
+            transform: rotate(-38deg)
+        }
+
+        .trompeta.der svg {
+            transform: scaleX(-1) rotate(-38deg)
+        }
+
+        #intro.activa .trompeta {
+            animation: sube-t .7s .1s ease-out both, toot .45s .7s ease-in-out 4
+        }
+
+        @keyframes sube-t {
+            to {
+                translate: 0 0
+            }
+        }
+
+        @keyframes toot {
+            50% {
+                scale: 1.12
+            }
+        }
+
+        @keyframes pop {
+            to {
+                scale: 1
+            }
+        }
+
+        @keyframes sube-txt {
+            from {
+                opacity: 0;
+                transform: translateY(18px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* Jardín */
+        .banderines {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 56px;
+            z-index: 5
+        }
+
+        #jardin.activa .banderines {
+            animation: baja 1s .2s both
+        }
+
+        @keyframes baja {
+            from {
+                transform: translateY(-100%)
+            }
+
+            to {
+                transform: none
+            }
+        }
+
+        #dedicatoria {
+            position: absolute;
+            top: calc(56px + 2vh);
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 5;
+            font-size: clamp(22px, 6.5vw, 32px);
+            font-weight: 700;
+            letter-spacing: .03em;
+            opacity: 0
+        }
+
+        #jardin.activa #dedicatoria {
+            animation: sube-txt 1s .8s both
+        }
+
+        #fotos {
+            position: absolute;
+            inset: 0;
+            z-index: 1
+        }
+
+        .suelo {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 3vh;
+            background: #8CC58D;
+            z-index: 2
+        }
+
+        #escena {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none
+        }
+
+        #escena #ramo {
+            pointer-events: auto;
+            cursor: pointer;
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            animation: mece-ramo 7s -3.5s ease-in-out infinite alternate
+        }
+
+        #escena image {
+            image-rendering: auto
+        }
+
+        @keyframes mece-ramo {
+            from {
+                transform: rotate(-1.5deg) translateY(0.5px);
+            }
+            to {
+                transform: rotate(1.5deg) translateY(-0.5px);
+            }
+        }
+
+        #petalos {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none
+        }
+
+        .pol {
+            position: absolute;
+            width: var(--w);
+            margin: calc(var(--w) * -.6) 0 0 calc(var(--w) * -.5);
+            padding: 5px 5px 18px;
+            background: #fff;
+            border-radius: 3px;
+            box-shadow: 0 6px 16px rgba(31, 78, 121, .25);
+            transform: rotate(var(--r));
+            opacity: 0;
+            cursor: zoom-in;
+            border: 0;
+            font: inherit;
+            color: inherit;
+            text-align: inherit
+        }
+
+        @media (pointer: coarse) {
+            .pol {
+                touch-action: manipulation
+            }
+
+            .cerrar {
+                min-height: 44px
+            }
+
+            #musica {
+                width: 44px;
+                height: 44px
+            }
+        }
+
+        @media (hover: hover) {
+            #jardin.activa .pol:hover {
+                filter: brightness(1.04) drop-shadow(0 8px 10px rgba(31, 78, 121, .26))
+            }
+        }
+
+        #jardin.activa .pol {
+            animation: entra .9s calc(1.2s + var(--i) * .14s) both, flota 6s calc(var(--i) * -.7s) ease-in-out infinite alternate
+        }
+
+        @keyframes entra {
+            from {
+                opacity: 0;
+                scale: .6
+            }
+
+            to {
+                opacity: 1;
+                scale: 1
+            }
+        }
+
+        @keyframes flota {
+            from {
+                translate: 0 -5px
+            }
+
+            to {
+                translate: 0 5px
+            }
+        }
+
+        .pol img,
+        .pol .ph-i {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            background: #dbe9f5
+        }
+
+        .pol .ph-i {
+            background: linear-gradient(135deg, #BFDDF5, #F8D3E0);
+            display: grid;
+            place-items: center;
+            font-size: 12px;
+            color: rgba(31, 78, 121, .6)
+        }
+
+        .crece {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            transform: scale(0)
+        }
+
+        #jardin.activa .crece {
+            animation: crece 1.3s var(--d, 0s) cubic-bezier(.2, .9, .3, 1.25) both
+        }
+
+        @keyframes crece {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        .mece {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            animation: mece 5s var(--s, 0s) ease-in-out infinite alternate
+        }
+
+        @keyframes mece {
+            from {
+                transform: rotate(-1.6deg)
+            }
+
+            to {
+                transform: rotate(1.6deg)
+            }
+        }
+
+        .pulso {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: pulso 2.2s ease-out infinite
+        }
+
+        @keyframes pulso {
+            from {
+                transform: scale(.85);
+                opacity: .9
+            }
+
+            to {
+                transform: scale(1.25);
+                opacity: 0
+            }
+        }
+
+        #pista {
+            transition: opacity .5s
+        }
+
+        #pista.oculta {
+            opacity: 0
+        }
+
+        .petalo {
+            position: absolute;
+            top: -30px;
+            border-radius: 150% 0 150% 0;
+            opacity: .85;
+            animation: cae linear infinite
+        }
+
+        #jardin:not(.activa) .petalo {
+            animation-play-state: paused
+        }
+
+        @keyframes cae {
+            to {
+                transform: translate(var(--dx), 110vh) rotate(540deg)
+            }
+        }
+
+        /* ---------- Carta ---------- */
+        #carta {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(22, 45, 74, .55);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .5s, visibility .5s
+        }
+
+        #carta.on {
+            opacity: 1;
+            visibility: visible
+        }
+
+        .pergamino {
+            width: min(94vw, 540px);
+            display: flex;
+            flex-direction: column
+        }
+
+        .vara {
+            height: 20px;
+            border-radius: 10px;
+            margin: 0 -8px;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(#7a4a20, #d9a866 45%, #6b3f18);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .35)
+        }
+
+        .papel {
+            max-height: 0;
+            overflow: hidden;
+            margin: 0 4px;
+            transition: max-height 1.6s cubic-bezier(.3, .7, .2, 1);
+            background: radial-gradient(ellipse at center, #fdf3d6 0%, #f4e2b4 70%, #e7cf96 100%);
+            box-shadow: inset 0 0 36px rgba(140, 100, 40, .35), 0 6px 18px rgba(0, 0, 0, .25)
+        }
+
+        .abierta .papel {
+            max-height: 66vh;
+            max-height: 66dvh
+        }
+
+        .papel.scroll {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch
+        }
+
+        .contenido {
+            padding: 22px 24px 26px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-style: italic;
+            color: #4a3520;
+            line-height: 1.75;
+            font-size: clamp(16px, 4.3vw, 19px)
+        }
+
+        .contenido>* {
+            opacity: 0
+        }
+
+        .abierta .contenido>* {
+            animation: sube-txt .9s both;
+            animation-delay: calc(1s + var(--k) * .35s)
+        }
+
+        .contenido h2 {
+            font-size: 1.35em;
+            margin-bottom: .6em;
+            font-style: normal;
+            color: #8a2c48;
+            text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.55)
+        }
+
+        .contenido p {
+            margin-bottom: .9em;
+            text-shadow: 0 0.5px 0.5px rgba(255, 255, 255, 0.45)
+        }
+
+        .contenido .cierre {
+            margin-bottom: .2em
+        }
+
+        .contenido .firma {
+            font-size: 1.25em;
+            color: #8a2c48;
+            text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.55)
+        }
+
+        .sello {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            margin: 10px auto 0;
+            display: grid;
+            place-items: center;
+            font: 700 20px Georgia, serif;
+            font-style: normal;
+            color: var(--oro);
+            background: radial-gradient(circle at 35% 30%, #d94b5b, #8f1d2c);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .4)
+        }
+
+        .cerrar {
+            align-self: center;
+            margin-top: 16px;
+            background: #fff;
+            color: var(--marino);
+            border: 0;
+            border-radius: 22px;
+            padding: 10px 22px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .25)
+        }
+
+        /* ---------- Extras ---------- */
+        #musica {
+            position: fixed;
+            top: calc(env(safe-area-inset-top, 0px) + 62px);
+            right: 12px;
+            z-index: 30;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 0;
+            background: rgba(255, 255, 255, .88);
+            color: var(--marino);
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+            cursor: pointer
+        }
+
+        #musica.off::after {
+            content: "";
+            position: absolute;
+            left: 9px;
+            right: 9px;
+            top: 50%;
+            height: 2px;
+            background: currentColor;
+            transform: rotate(-45deg)
+        }
+
+        #visor {
+            position: fixed;
+            inset: 0;
+            z-index: 40;
+            background: rgba(0, 0, 0, .8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .3s, visibility .3s
+        }
+
+        #visor.on {
+            opacity: 1;
+            visibility: visible
+        }
+
+        #visor img {
+            max-width: 92vw;
+            max-height: 88vh;
+            border: 8px solid #fff;
+            border-radius: 4px
+        }
+
+        #cerrar-visor {
+            position: absolute;
+            top: max(16px, env(safe-area-inset-top, 0px));
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .94);
+            color: var(--marino);
+            font-size: 30px;
+            line-height: 1;
+            cursor: pointer
+        }
+
+        #confeti {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            pointer-events: none
+        }
+
+        @media (max-width: 480px) {
+            #dedicatoria {
+                padding-inline: 54px;
+                font-size: clamp(20px, 6vw, 28px)
+            }
+
+            .pol {
+                padding: 4px 4px 14px
+            }
+
+            .contenido {
+                padding: 20px 20px 24px;
+                line-height: 1.65
+            }
+        }
+
+        @media (max-height: 560px) and (orientation: landscape) {
+            #gate {
+                gap: 10px
+            }
+
+            #gate svg {
+                width: min(28vh, 150px)
+            }
+
+            #intro .tarta {
+                width: min(30vh, 180px)
+            }
+
+            #dedicatoria {
+                top: 62px;
+                font-size: clamp(18px, 4.5vw, 26px)
+            }
+
+            .abierta .papel {
+                max-height: 58dvh
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important
+            }
+        }
