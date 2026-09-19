@@ -1,0 +1,408 @@
+        (() => {
+            'use strict';
+
+            /* =====================================================================
+               CONFIGURACIÓN — todo lo que se edita está aquí
+               ===================================================================== */
+            const CONFIG = {
+                nombre: "Lina",
+                edad: 23,                              // null para ocultarla
+                titulo: "¡Feliz cumpleaños!",
+                dedicatoria: "Para mi 10",
+                cancion: "audio/bff.webm",             // ruta relativa; respeta mayúsculas/minúsculas
+                fotos: [                               // entre 7 y 15; si falta un archivo se muestra un marco vacío
+                    "Imagenes/Foto_1.jpg", "Imagenes/Foto_2.jpg", "Imagenes/Foto_3.jpg", "Imagenes/Foto_4.jpg", "Imagenes/Foto_5.jpg",
+                    "Imagenes/Foto_6.jpg", "Imagenes/Foto_7.jpg", "Imagenes/Foto_8.jpg", "Imagenes/Foto_9.jpg", "Imagenes/Foto_10.jpg",
+                    "Imagenes/Foto_11.jpg", "Imagenes/Foto_12.jpg", "Imagenes/Foto_13.jpg", "Imagenes/Foto_14.jpg", "Imagenes/Foto_15.jpg",
+                    "Imagenes/Foto_16.jpg", "Imagenes/Foto_17.jpg"
+                ],
+                carta: {
+                    encabezado: "Querida Lina:",
+                    parrafos: [
+                        "[Escribe aquí el primer párrafo de tu carta.]",
+                        "[Cada párrafo va entre comillas y separado por una coma.]",
+                        "[Puedes agregar todos los que quieras; el pergamino se desplaza si el texto es largo.]"
+                    ],
+                    despedida: "Con cariño,",
+                    firma: "[Tu nombre]"
+                }
+            };
+
+            // Recursos florales del proyecto. Se usan directamente en el jardín.
+            const FLORES = {
+                girasol1: 'Flores/Girasol_1.png',
+                girasol2: 'Flores/Girasol_2.png',
+                girasol3: 'Flores/Girasol_3.png',
+                rosa: 'Flores/Rosa.png',
+                tulipan: 'Flores/tulipan.png'
+            };
+
+            /* =====================================================================
+               Utilidades
+               ===================================================================== */
+            const $ = s => document.querySelector(s);
+            const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const f2 = n => Math.round(n * 100) / 100;
+            const P = (...a) => a.map(f2).join(' ');
+
+            /* =====================================================================
+               Flores en SVG
+               ===================================================================== */
+            function girasol(cx, cy, r) {
+                let s = `<g transform="translate(${cx} ${cy})">`, N = 20;
+                for (let k = 0; k < N; k++) s += `<ellipse cx="0" cy="${f2(-r * .72)}" rx="${f2(r * .17)}" ry="${f2(r * .36)}" fill="#F2A900" transform="rotate(${f2(k * 360 / N + 9)})"/>`;
+                for (let k = 0; k < N; k++) s += `<ellipse cx="0" cy="${f2(-r * .76)}" rx="${f2(r * .17)}" ry="${f2(r * .38)}" fill="#FFC928" transform="rotate(${f2(k * 360 / N)})"/>`;
+                s += `<circle r="${f2(r * .46)}" fill="#5B3A1E"/><circle r="${f2(r * .34)}" fill="#7A4A22"/>`;
+                for (let k = 1; k <= 46; k++) {
+                    const rr = r * .44 * Math.sqrt(k / 46), a = k * 2.39996;
+                    s += `<circle cx="${f2(rr * Math.cos(a))}" cy="${f2(rr * Math.sin(a))}" r="${f2(r * .028)}" fill="#3B2412"/>`;
+                }
+                return s + '</g>';
+            }
+
+            function rosa(cx, cy, r) {
+                let d = 'M0 0';
+                for (let t = 0; t <= 6 * Math.PI; t += .25) {
+                    const rr = r * .08 + r * .72 * (t / (6 * Math.PI));
+                    d += `L${f2(rr * Math.cos(t))} ${f2(rr * Math.sin(t))}`;
+                }
+                return `<g transform="translate(${cx} ${cy})">
+    <circle r="${f2(r)}" fill="#D81B60"/><circle r="${f2(r * .86)}" fill="#E5507F"/>
+    <path d="${d}" fill="none" stroke="#A3124A" stroke-width="${f2(r * .07)}" stroke-linecap="round" opacity=".85"/>
+    <path d="M${P(-r * .62, -r * .35)} Q${P(-r * .2, -r * .95, r * .5, -r * .6)}" fill="none" stroke="#FF9DB9" stroke-width="${f2(r * .09)}" stroke-linecap="round" opacity=".7"/>
+  </g>`;
+            }
+
+            function tulipan(cx, cy, w, h, rot) {
+                return `<g transform="translate(${cx} ${cy}) rotate(${rot})">
+    <path d="M0 0 C${P(-w * .62, -h * .1, -w * .55, -h * .8, -w * .2, -h)} C${P(-w * .08, -h * .65, -w * .04, -h * .3, 0, 0)}Z" fill="#E8563A"/>
+    <path d="M0 0 C${P(w * .62, -h * .1, w * .55, -h * .8, w * .2, -h)} C${P(w * .08, -h * .65, w * .04, -h * .3, 0, 0)}Z" fill="#E8563A"/>
+    <path d="M${P(-w * .32, -h * .04)} C${P(-w * .38, -h * .6, -w * .16, -h * .98, 0, -h * 1.08)} C${P(w * .16, -h * .98, w * .38, -h * .6, w * .32, -h * .04)} Q0 ${f2(h * .08)} ${P(-w * .32, -h * .04)}Z" fill="#FF8467"/>
+  </g>`;
+            }
+
+            const tallo = (x, y, tx, ty, ancho = 4) => {
+                const dy = ty - y;
+                return `<path d="M${P(x, y)} C${P(x, y + dy * .5, tx, ty - dy * .3, tx, ty)}" fill="none" stroke="#3F8347" stroke-width="${ancho}" stroke-linecap="round"/>`;
+            };
+            const hoja = (cx, cy, l, rot) =>
+                `<path d="M0 0 C${P(l * .3, -l * .35, l * .75, -l * .3, l, 0)} C${P(l * .75, l * .3, l * .3, l * .35, 0, 0)}Z" fill="#4E9F5D" transform="translate(${cx} ${cy}) rotate(${rot})"/>`;
+            const crece = (html, d, s) => `<g class="crece" style="--d:${d}s"><g class="mece" style="--s:${s}s">${html}</g></g>`;
+
+            function girasolCompleto(cx, cy, r, tx, ty, d, s) {
+                const mx = (cx + tx) / 2, my = (cy + ty) / 2;
+                return crece(
+                    tallo(cx, cy + r * .9, tx, ty, 6) +
+                    hoja(mx, my, 34, -30) + hoja(mx, my + 26, 34, 210) +
+                    girasol(cx, cy, r), d, s);
+            }
+
+            function florDeReferencia(src, x, y, w, h, d, s, rot = 0) {
+                const cx = f2(x + w / 2), cy = f2(y + h);
+                return crece(
+                    `<image href="${src}" x="${x}" y="${y}" width="${w}" height="${h}" ` +
+                    `preserveAspectRatio="xMidYMid meet" transform="rotate(${rot} ${cx} ${cy})" ` +
+                    `style="mix-blend-mode:multiply"/>`, d, s
+                );
+            }
+
+            function balon(cx, cy, r) {
+                let pts = '', rayas = '';
+                for (let k = 0; k < 5; k++) {
+                    const a = (-90 + 72 * k) * Math.PI / 180;
+                    pts += `${f2(r * .42 * Math.cos(a))},${f2(r * .42 * Math.sin(a))} `;
+                    rayas += `<line x1="${f2(r * .42 * Math.cos(a))}" y1="${f2(r * .42 * Math.sin(a))}" x2="${f2(r * .95 * Math.cos(a))}" y2="${f2(r * .95 * Math.sin(a))}" stroke="#1F2933" stroke-width="1.3"/>`;
+                }
+                return `<g transform="translate(${cx} ${cy})">
+    <ellipse cx="0" cy="${f2(r * 1.02)}" rx="${f2(r * .9)}" ry="${f2(r * .18)}" fill="rgba(0,0,0,.15)"/>
+    <circle r="${r}" fill="#fff" stroke="#1F2933" stroke-width="1.5"/>${rayas}
+    <polygon points="${pts}" fill="#1F2933"/></g>`;
+            }
+
+            const TROMPETA = `<svg viewBox="0 0 160 100">
+  <g fill="none" stroke="#F6B40E" stroke-width="9" stroke-linecap="round">
+    <path d="M14 58 H112"/><path d="M38 58 C30 20 92 20 84 58" stroke-width="6"/>
+  </g>
+  <path d="M108 50 L152 22 Q158 60 152 98 L108 68 Z" fill="#F6B40E" stroke="#D69A00" stroke-width="2" stroke-linejoin="round"/>
+  <g stroke="#B8860B" stroke-width="4" stroke-linecap="round"><path d="M54 58 V38"/><path d="M66 58 V38"/><path d="M78 58 V38"/></g>
+  <circle cx="12" cy="58" r="6" fill="#D69A00"/>
+</svg>`;
+
+            /* =====================================================================
+               Construcción de la escena
+               ===================================================================== */
+            $('#gate-flor').innerHTML = girasol(100, 100, 82);
+            $('#gate-titulo').textContent = `Para ${CONFIG.nombre}`;
+            $('#t1').textContent = CONFIG.titulo;
+            $('#t2').textContent = CONFIG.nombre;
+            if (CONFIG.edad) $('#edad b').textContent = CONFIG.edad; else $('#edad').remove();
+            $('#dedicatoria').textContent = CONFIG.dedicatoria;
+            document.querySelectorAll('.trompeta').forEach(t => t.innerHTML = TROMPETA);
+
+            const tulipanes = [[128, 455, 40, 54, -20, 1.2], [272, 455, 40, 54, 20, 1.3], [166, 414, 38, 52, -8, 1.4], [234, 414, 38, 52, 8, 1.5]];
+            const rosas = [[200, 440, 34, 1.7], [165, 480, 30, 1.85], [235, 480, 30, 2.0]];
+            let ramo = '<rect x="100" y="330" width="200" height="345" fill="transparent"/>';
+            tulipanes.forEach(([x, y, w, h, rot, d], i) => ramo += crece(tallo(x, y, 200, 590, 4) + tulipan(x, y, w, h, rot), d, -i * .7));
+            ramo += crece(hoja(190, 522, 60, 200) + hoja(210, 522, 60, -20) + hoja(175, 530, 48, 225) + hoja(225, 530, 48, -45), 1.6, -.4);
+            rosas.forEach(([x, y, r, d], i) => ramo += crece(tallo(x, y + r * .6, 200, 590, 4) + rosa(x, y, r), d, -i * .9 - .3));
+            let rayas = '';
+            for (let x = 120; x < 290; x += 24) rayas += `<rect x="${x}" y="520" width="12" height="160" fill="#75AADB"/>`;
+            ramo += `<g class="crece" style="--d:2.1s">
+  <g clip-path="url(#cpEnv)"><polygon points="126,528 274,528 224,674 176,674" fill="#fff"/>${rayas}</g>
+  <polygon points="126,528 274,528 224,674 176,674" fill="none" stroke="#5c8fbf" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M126 528 Q200 548 274 528" fill="none" stroke="#5c8fbf" stroke-width="1.5"/>
+  <path d="M196 572 L184 606 L197 599 L201 608 Z M204 572 L216 606 L203 599 L199 608 Z" fill="#E39F00"/>
+  <path d="M200 566 C${P(160, 536, 158, 596, 200, 568)} C${P(242, 596, 240, 536, 200, 566)}Z" fill="#F6B40E" stroke="#D69A00" stroke-width="1.5"/>
+  <circle cx="200" cy="567" r="7" fill="#E39F00"/></g>`;
+
+            $('#escena').innerHTML = `
+  <defs><clipPath id="cpEnv"><polygon points="126,528 274,528 224,674 176,674"/></clipPath></defs>
+  ${florDeReferencia(FLORES.girasol1, -62, 282, 206, 307, .3, -.5, -3)}
+  ${florDeReferencia(FLORES.girasol2, 252, 250, 198, 295, .5, -1.5, 3)}
+  ${florDeReferencia(FLORES.girasol3, 115, 222, 170, 253, .7, -2.5)}
+  ${florDeReferencia(FLORES.tulipan, 22, 433, 128, 191, .9, -3, -7)}
+  ${florDeReferencia(FLORES.rosa, 254, 418, 128, 191, 1, -3.5, 6)}
+  <path d="M0 700 V670 Q50 656 110 668 T230 664 T340 668 T400 662 V700Z" fill="#A9D8A6"/>
+  <path d="M0 700 V684 Q70 674 140 684 T280 682 T400 680 V700Z" fill="#8CC58D"/>
+  ${balon(72, 664, 18)}
+  <g id="ramo" role="button" tabindex="0" aria-label="Abrir la carta">${ramo}</g>
+  <g id="pista" pointer-events="none">
+    <circle class="pulso" cx="200" cy="450" r="100" fill="none" stroke="#fff" stroke-width="4"/>
+    <rect x="135" y="316" width="130" height="30" rx="15" fill="#fff" opacity=".92"/>
+    <text x="200" y="336" text-anchor="middle" font-size="15" font-weight="700" fill="#1F4E79">Toca el ramo</text>
+  </g>`;
+
+            /* Fotos al fondo del jardín, en anillo alrededor del ramo */
+            const nF = CONFIG.fotos.length;
+            const ancho = nF > 10 ? 'clamp(64px,17vmin,120px)' : 'clamp(74px,21vmin,150px)';
+            CONFIG.fotos.forEach((src, i) => {
+                /* arco de 220° por encima del ramo; con más de 9 fotos se alternan dos anillos */
+                const a = (-200 + (nF > 1 ? i * 220 / (nF - 1) : 110)) * Math.PI / 180;
+                const dentro = nF > 9 && i % 2;
+                const rx = dentro ? 31 : 43, ry = dentro ? 25 : 34;
+                const d = document.createElement('button');
+                d.type = 'button';
+                d.className = 'pol';
+                d.setAttribute('aria-label', `Ampliar foto ${i + 1}`);
+                d.style.cssText = `left:${f2(50 + rx * Math.cos(a))}%;top:${f2(55 + ry * Math.sin(a))}%;--w:${ancho};--i:${i};--r:${(i * 37) % 13 - 6}deg`;
+                const img = new Image();
+                img.alt = `Foto ${i + 1}`;
+                img.onerror = () => {
+                    const ph = document.createElement('span');
+                    ph.className = 'ph-i'; ph.textContent = `foto ${i + 1}`;
+                    img.replaceWith(ph); d.classList.add('ph');
+                };
+                img.src = src;
+                d.appendChild(img);
+                $('#fotos').appendChild(d);
+            });
+
+            /* Pétalos cayendo */
+            const colPetalos = ['#E0457B', '#F48FB1', '#F6B40E', '#FF8467'];
+            for (let i = 0; i < 14; i++) {
+                const p = document.createElement('i');
+                p.className = 'petalo';
+                p.style.cssText = `left:${f2(Math.random() * 100)}%;background:${colPetalos[i % 4]};--dx:${f2((Math.random() - .5) * 120)}px;` +
+                    `animation-duration:${f2(9 + Math.random() * 8)}s;animation-delay:${f2(-Math.random() * 14)}s;` +
+                    `width:${f2(8 + Math.random() * 7)}px;height:${f2(10 + Math.random() * 8)}px`;
+                $('#petalos').appendChild(p);
+            }
+
+            /* Carta */
+            const cont = $('#contenido'); let k = 0;
+            const add = (tag, txt, cls) => {
+                const e = document.createElement(tag);
+                e.textContent = txt; if (cls) e.className = cls;
+                e.style.setProperty('--k', k++); cont.appendChild(e);
+            };
+            add('h2', CONFIG.carta.encabezado);
+            CONFIG.carta.parrafos.forEach(t => add('p', t));
+            add('p', CONFIG.carta.despedida, 'cierre');
+            add('p', CONFIG.carta.firma, 'firma');
+            add('div', '10', 'sello');
+
+            /* =====================================================================
+               Confeti (canvas)
+               ===================================================================== */
+            const cv = $('#confeti'), cx = cv.getContext('2d');
+            let partes = [], raf = 0;
+            const ajusta = () => {
+                const d = window.devicePixelRatio || 1;
+                cv.width = innerWidth * d; cv.height = innerHeight * d;
+                cx.setTransform(d, 0, 0, d, 0, 0);
+            };
+            addEventListener('resize', ajusta); ajusta();
+            const COLS = ['#75AADB', '#ffffff', '#F6B40E', '#E0457B', '#FF8467', '#9CCC9F'];
+
+            function estallido(x, y, dir = 0, n = 90) {
+                const N = reducido ? Math.min(n, 25) : n;
+                for (let i = 0; i < N; i++) {
+                    const a = -Math.PI / 2 + dir + (Math.random() - .5) * 1.1, v = 6 + Math.random() * 9;
+                    partes.push({
+                        x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, w: 5 + Math.random() * 6, h: 3 + Math.random() * 4,
+                        r: Math.random() * 6.28, vr: (Math.random() - .5) * .4, c: COLS[i % COLS.length], vida: 0
+                    });
+                }
+                if (!raf) raf = requestAnimationFrame(paso);
+            }
+            function paso() {
+                cx.clearRect(0, 0, innerWidth, innerHeight);
+                partes = partes.filter(p => p.y < innerHeight + 20 && p.vida < 260);
+                for (const p of partes) {
+                    p.vy += .28; p.vx *= .99; p.vy *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.vida++;
+                    cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r); cx.fillStyle = p.c;
+                    cx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); cx.restore();
+                }
+                raf = partes.length ? requestAnimationFrame(paso) : 0;
+            }
+
+            /* =====================================================================
+               Sonido: fanfarria sintetizada (no requiere archivo) y canción
+               ===================================================================== */
+            let ctx = null;
+            function iniciaAudio() {
+                try {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    if (AC) { ctx = new AC(); ctx.resume(); }
+                } catch (e) { ctx = null; }
+            }
+            function nota(freq, t0, dur, vol = .2) {
+                const g = ctx.createGain(), f = ctx.createBiquadFilter();
+                f.type = 'lowpass';
+                f.frequency.setValueAtTime(700, t0);
+                f.frequency.linearRampToValueAtTime(2600, t0 + .06);
+                f.frequency.linearRampToValueAtTime(1400, t0 + dur);
+                g.gain.setValueAtTime(0, t0);
+                g.gain.linearRampToValueAtTime(vol, t0 + .03);
+                g.gain.setValueAtTime(vol, Math.max(t0 + .04, t0 + dur - .08));
+                g.gain.linearRampToValueAtTime(0, t0 + dur);
+                f.connect(g); g.connect(ctx.destination);
+                ['sawtooth', 'square'].forEach((tipo, i) => {
+                    const o = ctx.createOscillator();
+                    o.type = tipo; o.frequency.value = freq; o.detune.value = i * 6;
+                    o.connect(f); o.start(t0); o.stop(t0 + dur + .02);
+                });
+            }
+            function fanfarria() {
+                if (!ctx) return;
+                const t = ctx.currentTime + .05;
+                [[392, 0, .16], [392, .2, .16], [392, .4, .16], [523.25, .62, .55], [659.25, 1.25, .25]].forEach(([f, d, l]) => nota(f, t + d, l));
+                [[784, 1.55, 1.1], [659.25, 1.55, 1.1], [523.25, 1.55, 1.1]].forEach(([f, d, l]) => nota(f, t + d, l, .12));
+            }
+
+            const musica = new Audio(CONFIG.cancion);
+            musica.loop = true; musica.preload = 'metadata';
+            const btnMusica = $('#musica');
+            let sonando = false, audioDisponible = Boolean(CONFIG.cancion);
+            musica.addEventListener('error', () => {
+                audioDisponible = false;
+                sonando = false;
+                btnMusica.hidden = true;
+            });
+            function actualizaBotonMusica() {
+                const accion = musica.muted ? 'Activar' : 'Silenciar';
+                btnMusica.setAttribute('aria-label', `${accion} la música`);
+                btnMusica.setAttribute('title', `${accion} la música`);
+            }
+            function iniciaMusica() {
+                if (!audioDisponible || sonando) return;
+                sonando = true; musica.volume = 0;
+                musica.play().then(() => {
+                    btnMusica.hidden = false;
+                    actualizaBotonMusica();
+                    let v = 0;
+                    const t = setInterval(() => { v = Math.min(.85, v + .05); musica.volume = v; if (v >= .85) clearInterval(t); }, 120);
+                }).catch(() => { sonando = false; });
+            }
+            btnMusica.addEventListener('click', () => {
+                musica.muted = !musica.muted;
+                btnMusica.classList.toggle('off', musica.muted);
+                actualizaBotonMusica();
+            });
+
+            /* =====================================================================
+               Flujo: apertura → intro → jardín → carta
+               ===================================================================== */
+            const etapas = ['gate', 'intro', 'jardin'].map(id => $('#' + id));
+            const ir = id => etapas.forEach(e => e.classList.toggle('activa', e.id === id));
+            const espera = (ms, fn) => setTimeout(fn, reducido ? 0 : ms);
+
+            function rafaga(sel) {
+                const r = $(sel).getBoundingClientRect(), izq = sel.includes('izq');
+                estallido(izq ? r.right - r.width * .06 : r.left + r.width * .06, r.top + r.height * .12, izq ? .45 : -.45);
+            }
+
+            let iniciado = false;
+            function abrirRegalo() {
+                if (iniciado) return;
+                iniciado = true;
+                iniciaAudio(); ir('intro'); fanfarria();
+                espera(650, () => { rafaga('.trompeta.izq'); rafaga('.trompeta.der'); });
+                espera(1600, () => { rafaga('.trompeta.izq'); rafaga('.trompeta.der'); });
+                // La secuencia de trompetas termina a los 2.5 s (.7 s + 4 × .45 s).
+                espera(2500, () => {
+                    iniciaMusica();
+                    estallido(innerWidth / 2, innerHeight * .8, 0, 120);
+                });
+                espera(4600, () => { ir('jardin'); estallido(innerWidth / 2, innerHeight * .8, 0, 70); });
+            }
+            const gate = $('#gate');
+            gate.addEventListener('click', abrirRegalo);
+            gate.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirRegalo(); }
+            });
+
+            const carta = $('#carta'), pergamino = $('#pergamino'), papel = $('#papel');
+            carta.setAttribute('aria-label', `Carta para ${CONFIG.nombre}`);
+            let timerScroll = 0, focoCarta = null;
+            function abrirCarta() {
+                focoCarta = document.activeElement;
+                carta.classList.add('on'); carta.setAttribute('aria-hidden', 'false');
+                requestAnimationFrame(() => requestAnimationFrame(() => pergamino.classList.add('abierta')));
+                clearTimeout(timerScroll);
+                timerScroll = setTimeout(() => papel.classList.add('scroll'), 1700);
+                $('#pista').classList.add('oculta');
+                estallido(innerWidth / 2, innerHeight * .62, 0, 60);
+                $('#cerrar').focus();
+            }
+            function cerrarCarta() {
+                if (!carta.classList.contains('on')) return;
+                carta.classList.remove('on'); carta.setAttribute('aria-hidden', 'true');
+                pergamino.classList.remove('abierta'); papel.classList.remove('scroll');
+                papel.scrollTop = 0;
+                focoCarta?.focus();
+            }
+            const elRamo = $('#ramo');
+            elRamo.addEventListener('click', abrirCarta);
+            elRamo.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirCarta(); } });
+            $('#cerrar').addEventListener('click', cerrarCarta);
+            carta.addEventListener('click', e => { if (e.target === carta) cerrarCarta(); });
+            /* Ampliar una foto al tocarla */
+            const visor = $('#visor'), imagenVisor = visor.querySelector('img');
+            let focoVisor = null;
+            function abrirVisor(imagen) {
+                focoVisor = document.activeElement;
+                imagenVisor.src = imagen.currentSrc || imagen.src;
+                imagenVisor.alt = imagen.alt;
+                visor.classList.add('on'); visor.setAttribute('aria-hidden', 'false');
+                $('#cerrar-visor').focus();
+            }
+            function cerrarVisor() {
+                if (!visor.classList.contains('on')) return;
+                visor.classList.remove('on'); visor.setAttribute('aria-hidden', 'true');
+                imagenVisor.removeAttribute('src');
+                focoVisor?.focus();
+            }
+            addEventListener('keydown', e => {
+                if (e.key !== 'Escape') return;
+                if (visor.classList.contains('on')) cerrarVisor();
+                else cerrarCarta();
+            });
+            $('#fotos').addEventListener('click', e => {
+                const im = e.target.closest('.pol img');
+                if (!im) return;
+                abrirVisor(im);
+            });
+            $('#cerrar-visor').addEventListener('click', cerrarVisor);
+            visor.addEventListener('click', e => { if (e.target === visor) cerrarVisor(); });
+        })();
