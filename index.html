@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#CFE6F7">
+    <!-- Vista previa del enlace en WhatsApp -->
+    <meta property="og:title" content="Tengo algo para ti">
+    <meta property="og:description" content="Toca para abrir">
+    <meta property="og:image" content="./Flores/Ramo_Girasoles.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+    <title>Tengo algo para ti</title>
+    <style>
+        :root {
+            --celeste: #75AADB;
+            --marino: #1F4E79;
+            --oro: #F6B40E;
+            --rosa: #E0457B;
+            --crema: #FFF8EC;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden
+        }
+
+        body {
+            font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+            color: var(--marino);
+            background: #CFE6F7
+        }
+
+        button {
+            font-family: inherit
+        }
+
+        button:focus-visible,
+        #ramo:focus-visible {
+            outline: 3px solid var(--marino);
+            outline-offset: 3px
+        }
+
+        #ramo:focus {
+            outline: none
+        }
+
+        /* ---------- Etapas ---------- */
+        .etapa {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .9s ease, visibility .9s;
+            background: linear-gradient(180deg, #CFE6F7 0%, #EAF4FB 55%, var(--crema) 100%)
+        }
+
+        .etapa::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: repeating-linear-gradient(90deg, rgba(117, 170, 219, .14) 0 44px, rgba(255, 255, 255, 0) 44px 88px)
+        }
+
+        .etapa.activa {
+            opacity: 1;
+            visibility: visible
+        }
+
+        /* Pantalla de apertura */
+        #gate {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            cursor: pointer;
+            text-align: center;
+            padding: 24px
+        }
+
+        #gate svg {
+            width: min(46vw, 190px);
+            animation: gira 24s linear infinite
+        }
+
+        #gate h1 {
+            font-size: clamp(26px, 7.5vw, 36px);
+            font-weight: 700
+        }
+
+        #gate p {
+            font-size: 16px;
+            opacity: .75;
+            animation: late 1.8s ease-in-out infinite
+        }
+
+        @keyframes gira {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes late {
+            50% {
+                opacity: 1;
+                transform: scale(1.06)
+            }
+        }
+
+        /* Intro */
+        #intro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+            padding: 16px
+        }
+
+        #intro>*:not(.trompeta) {
+            position: relative;
+            z-index: 1
+        }
+
+        #intro h2 {
+            font-size: clamp(28px, 9vw, 46px);
+            line-height: 1.1;
+            opacity: 0
+        }
+
+        #intro .nombre {
+            font-size: clamp(44px, 15vw, 80px);
+            font-weight: 800;
+            line-height: 1;
+            color: var(--celeste);
+            text-shadow: 0 3px 0 #fff;
+            opacity: 0
+        }
+
+        #intro .tarta {
+            width: min(56vw, 230px, 32vh);
+            height: auto;
+            scale: 0
+        }
+
+        .edad {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            background: var(--oro);
+            color: #fff;
+            padding: 4px 22px;
+            border-radius: 40px;
+            font-weight: 800;
+            box-shadow: 0 4px 0 #d69a00;
+            opacity: 0
+        }
+
+        .edad b {
+            font-size: clamp(30px, 10vw, 44px)
+        }
+
+        .edad span {
+            font-size: 16px
+        }
+
+        #intro.activa h2 {
+            animation: sube-txt .8s .2s both
+        }
+
+        #intro.activa .nombre {
+            animation: sube-txt .8s .5s both
+        }
+
+        #intro.activa .tarta {
+            animation: pop .7s .9s cubic-bezier(.2, 1.4, .4, 1) both
+        }
+
+        #intro.activa .edad {
+            animation: sube-txt .8s 1.5s both
+        }
+
+        .llama {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            animation: llama .4s ease-in-out infinite alternate
+        }
+
+        @keyframes llama {
+            to {
+                transform: scale(.85, 1.12) rotate(5deg)
+            }
+        }
+
+        .trompeta {
+            position: absolute;
+            bottom: 3vh;
+            width: min(36vw, 190px);
+            translate: 0 140%;
+            z-index: 0
+        }
+
+        .trompeta.izq {
+            left: -1vw
+        }
+
+        .trompeta.der {
+            right: -1vw
+        }
+
+        .trompeta svg {
+            display: block;
+            width: 100%;
+            height: auto
+        }
+
+        .trompeta.izq svg {
+            transform: rotate(-38deg)
+        }
+
+        .trompeta.der svg {
+            transform: scaleX(-1) rotate(-38deg)
+        }
+
+        #intro.activa .trompeta {
+            animation: sube-t .7s .1s ease-out both, toot .45s .7s ease-in-out 4
+        }
+
+        @keyframes sube-t {
+            to {
+                translate: 0 0
+            }
+        }
+
+        @keyframes toot {
+            50% {
+                scale: 1.12
+            }
+        }
+
+        @keyframes pop {
+            to {
+                scale: 1
+            }
+        }
+
+        @keyframes sube-txt {
+            from {
+                opacity: 0;
+                transform: translateY(18px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* Jardín */
+        .banderines {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 56px;
+            z-index: 5
+        }
+
+        #jardin.activa .banderines {
+            animation: baja 1s .2s both
+        }
+
+        @keyframes baja {
+            from {
+                transform: translateY(-100%)
+            }
+
+            to {
+                transform: none
+            }
+        }
+
+        #dedicatoria {
+            position: absolute;
+            top: calc(56px + 2vh);
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 5;
+            font-size: clamp(22px, 6.5vw, 32px);
+            font-weight: 700;
+            letter-spacing: .03em;
+            opacity: 0
+        }
+
+        #jardin.activa #dedicatoria {
+            animation: sube-txt 1s .8s both
+        }
+
+        #fotos {
+            position: absolute;
+            inset: 0;
+            z-index: 1
+        }
+
+        .suelo {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 3vh;
+            background: #8CC58D;
+            z-index: 2
+        }
+
+        #escena {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none
+        }
+
+        #escena #ramo {
+            pointer-events: auto;
+            cursor: pointer;
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            animation: mece-ramo 7s -3.5s ease-in-out infinite alternate
+        }
+
+        @keyframes mece-ramo {
+            from {
+                transform: rotate(-1.5deg) translateY(0.5px);
+            }
+            to {
+                transform: rotate(1.5deg) translateY(-0.5px);
+            }
+        }
+
+        #petalos {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none
+        }
+
+        .pol {
+            position: absolute;
+            width: var(--w);
+            margin: calc(var(--w) * -.6) 0 0 calc(var(--w) * -.5);
+            padding: 5px 5px 18px;
+            background: #fff;
+            border-radius: 3px;
+            box-shadow: 0 6px 16px rgba(31, 78, 121, .25);
+            transform: rotate(var(--r));
+            opacity: 0;
+            cursor: zoom-in
+        }
+
+        #jardin.activa .pol {
+            animation: entra .9s calc(1.2s + var(--i) * .14s) both, flota 6s calc(var(--i) * -.7s) ease-in-out infinite alternate
+        }
+
+        @keyframes entra {
+            from {
+                opacity: 0;
+                scale: .6
+            }
+
+            to {
+                opacity: 1;
+                scale: 1
+            }
+        }
+
+        @keyframes flota {
+            from {
+                translate: 0 -5px
+            }
+
+            to {
+                translate: 0 5px
+            }
+        }
+
+        .pol img,
+        .pol .ph-i {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            background: #dbe9f5
+        }
+
+        .pol .ph-i {
+            background: linear-gradient(135deg, #BFDDF5, #F8D3E0);
+            display: grid;
+            place-items: center;
+            font-size: 12px;
+            color: rgba(31, 78, 121, .6)
+        }
+
+        .crece {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            transform: scale(0)
+        }
+
+        #jardin.activa .crece {
+            animation: crece 1.3s var(--d, 0s) cubic-bezier(.2, .9, .3, 1.25) both
+        }
+
+        @keyframes crece {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        .mece {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            animation: mece 5s var(--s, 0s) ease-in-out infinite alternate
+        }
+
+        @keyframes mece {
+            from {
+                transform: rotate(-1.6deg)
+            }
+
+            to {
+                transform: rotate(1.6deg)
+            }
+        }
+
+        .pulso {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: pulso 2.2s ease-out infinite
+        }
+
+        @keyframes pulso {
+            from {
+                transform: scale(.85);
+                opacity: .9
+            }
+
+            to {
+                transform: scale(1.25);
+                opacity: 0
+            }
+        }
+
+        #pista {
+            transition: opacity .5s
+        }
+
+        #pista.oculta {
+            opacity: 0
+        }
+
+        .petalo {
+            position: absolute;
+            top: -30px;
+            border-radius: 150% 0 150% 0;
+            opacity: .85;
+            animation: cae linear infinite
+        }
+
+        #jardin:not(.activa) .petalo {
+            animation-play-state: paused
+        }
+
+        @keyframes cae {
+            to {
+                transform: translate(var(--dx), 110vh) rotate(540deg)
+            }
+        }
+
+        /* ---------- Carta ---------- */
+        #carta {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(22, 45, 74, .55);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .5s, visibility .5s
+        }
+
+        #carta.on {
+            opacity: 1;
+            visibility: visible
+        }
+
+        .pergamino {
+            width: min(94vw, 540px);
+            display: flex;
+            flex-direction: column
+        }
+
+        .vara {
+            height: 20px;
+            border-radius: 10px;
+            margin: 0 -8px;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(#7a4a20, #d9a866 45%, #6b3f18);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .35)
+        }
+
+        .papel {
+            max-height: 0;
+            overflow: hidden;
+            margin: 0 4px;
+            transition: max-height 1.6s cubic-bezier(.3, .7, .2, 1);
+            background: radial-gradient(ellipse at center, #fdf3d6 0%, #f4e2b4 70%, #e7cf96 100%);
+            box-shadow: inset 0 0 36px rgba(140, 100, 40, .35), 0 6px 18px rgba(0, 0, 0, .25)
+        }
+
+        .abierta .papel {
+            max-height: 66vh;
+            max-height: 66dvh
+        }
+
+        .papel.scroll {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch
+        }
+
+        .contenido {
+            padding: 22px 24px 26px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-style: italic;
+            color: #4a3520;
+            line-height: 1.75;
+            font-size: clamp(16px, 4.3vw, 19px)
+        }
+
+        .contenido>* {
+            opacity: 0
+        }
+
+        .abierta .contenido>* {
+            animation: sube-txt .9s both;
+            animation-delay: calc(1s + var(--k) * .35s)
+        }
+
+        .contenido h2 {
+            font-size: 1.35em;
+            margin-bottom: .6em;
+            font-style: normal;
+            color: #8a2c48;
+            text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.55)
+        }
+
+        .contenido p {
+            margin-bottom: .9em;
+            text-shadow: 0 0.5px 0.5px rgba(255, 255, 255, 0.45)
+        }
+
+        .contenido .cierre {
+            margin-bottom: .2em
+        }
+
+        .contenido .firma {
+            font-size: 1.25em;
+            color: #8a2c48;
+            text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.55)
+        }
+
+        .sello {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            margin: 10px auto 0;
+            display: grid;
+            place-items: center;
+            font: 700 20px Georgia, serif;
+            font-style: normal;
+            color: var(--oro);
+            background: radial-gradient(circle at 35% 30%, #d94b5b, #8f1d2c);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .4)
+        }
+
+        .cerrar {
+            align-self: center;
+            margin-top: 16px;
+            background: #fff;
+            color: var(--marino);
+            border: 0;
+            border-radius: 22px;
+            padding: 10px 22px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .25)
+        }
+
+        /* ---------- Extras ---------- */
+        #musica {
+            position: fixed;
+            top: calc(env(safe-area-inset-top, 0px) + 62px);
+            right: 12px;
+            z-index: 30;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 0;
+            background: rgba(255, 255, 255, .88);
+            color: var(--marino);
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+            cursor: pointer
+        }
+
+        #musica.off::after {
+            content: "";
+            position: absolute;
+            left: 9px;
+            right: 9px;
+            top: 50%;
+            height: 2px;
+            background: currentColor;
+            transform: rotate(-45deg)
+        }
+
+        #visor {
+            position: fixed;
+            inset: 0;
+            z-index: 40;
+            background: rgba(0, 0, 0, .8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .3s, visibility .3s
+        }
+
+        #visor.on {
+            opacity: 1;
+            visibility: visible
+        }
+
+        #visor img {
+            max-width: 92vw;
+            max-height: 88vh;
+            border: 8px solid #fff;
+            border-radius: 4px
+        }
+
+        #confeti {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            pointer-events: none
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1) Apertura: el toque desbloquea el sonido en celulares -->
+    <section id="gate" class="etapa activa" aria-label="Abrir el regalo">
+        <svg id="gate-flor" viewBox="0 0 200 200" aria-hidden="true"></svg>
+        <h1 id="gate-titulo"></h1>
+        <p>Toca para abrir</p>
+    </section>
+
+    <!-- 2) Intro: cumpleaños, trompetas y pastel -->
+    <section id="intro" class="etapa" aria-live="polite">
+        <div class="trompeta izq" aria-hidden="true"></div>
+        <div class="trompeta der" aria-hidden="true"></div>
+        <h2 id="t1"></h2>
+        <div class="nombre" id="t2"></div>
+        <svg class="tarta" viewBox="0 0 200 190" aria-hidden="true">
+            <defs>
+                <clipPath id="cpTarta">
+                    <rect x="50" y="76" width="100" height="46" rx="10" />
+                </clipPath>
+            </defs>
+            <ellipse cx="100" cy="180" rx="92" ry="8" fill="rgba(31,78,121,.15)" />
+            <rect x="18" y="120" width="164" height="58" rx="12" fill="#75AADB" />
+            <g fill="#fff">
+                <rect x="18" y="120" width="164" height="14" rx="7" />
+                <circle cx="36" cy="136" r="8" />
+                <circle cx="68" cy="138" r="9" />
+                <circle cx="104" cy="136" r="8" />
+                <circle cx="136" cy="139" r="9" />
+                <circle cx="166" cy="136" r="8" />
+            </g>
+            <rect x="50" y="76" width="100" height="46" rx="10" fill="#fff" />
+            <g clip-path="url(#cpTarta)" fill="#75AADB">
+                <rect x="50" y="76" width="20" height="46" />
+                <rect x="90" y="76" width="20" height="46" />
+                <rect x="130" y="76" width="20" height="46" />
+            </g>
+            <rect x="75" y="52" width="6" height="26" rx="2" fill="#E0457B" />
+            <rect x="97" y="52" width="6" height="26" rx="2" fill="#F6B40E" />
+            <rect x="119" y="52" width="6" height="26" rx="2" fill="#E0457B" />
+            <ellipse class="llama" cx="78" cy="45" rx="5" ry="8" fill="#FFC107" />
+            <ellipse class="llama" cx="100" cy="45" rx="5" ry="8" fill="#FFC107" style="animation-delay:-.15s" />
+            <ellipse class="llama" cx="122" cy="45" rx="5" ry="8" fill="#FFC107" style="animation-delay:-.3s" />
+        </svg>
+        <div class="edad" id="edad"><b></b><span>años</span></div>
+    </section>
+
+    <!-- 3) Jardín: fotos al fondo, girasoles y ramo al centro -->
+    <section id="jardin" class="etapa" aria-label="Jardín">
+        <svg class="banderines" aria-hidden="true">
+            <defs>
+                <pattern id="bd" width="128" height="56" patternUnits="userSpaceOnUse">
+                    <path d="M4 8 L32 50 L60 8 Z" fill="#75AADB" />
+                    <path d="M68 8 L96 50 L124 8 Z" fill="#fff" stroke="#75AADB" stroke-width="2"
+                        stroke-linejoin="round" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="56" fill="url(#bd)" />
+            <rect width="100%" height="4" y="6" fill="#1F4E79" opacity=".35" />
+        </svg>
+        <div id="dedicatoria"></div>
+        <div id="fotos"></div>
+        <div class="suelo"></div>
+        <svg id="escena" viewBox="0 0 400 700" preserveAspectRatio="xMidYMax meet"></svg>
+        <div id="petalos"></div>
+    </section>
+
+    <!-- 4) Carta en pergamino -->
+    <div id="carta" aria-hidden="true">
+        <div class="pergamino" id="pergamino">
+            <div class="vara"></div>
+            <div class="papel" id="papel">
+                <div class="contenido" id="contenido"></div>
+            </div>
+            <div class="vara"></div>
+            <button class="cerrar" id="cerrar" type="button">Volver al jardín</button>
+        </div>
+    </div>
+
+    <button id="musica" type="button" aria-label="Silenciar o activar la música" hidden>♪</button>
+    <div id="visor"><img alt=""></div>
+    <canvas id="confeti"></canvas>
+
+    <script>
+        (() => {
+            'use strict';
+
+            /* =====================================================================
+               CONFIGURACIÓN — todo lo que se edita está aquí
+               ===================================================================== */
+            const CONFIG = {
+                nombre: "Lina",
+                edad: 23,                              // null para ocultarla
+                titulo: "¡Feliz cumpleaños!",
+                dedicatoria: "Para mi 10",
+                cancion: "audio/bff.mp3",              // ruta relativa; respeta mayúsculas/minúsculas
+                fotos: [                               // entre 7 y 15; si falta un archivo se muestra un marco vacío
+                    "Imagenes/Foto_1.jpg", "Imagenes/Foto_2.jpg", "Imagenes/Foto_3.jpg", "Imagenes/Foto_4.jpg", "Imagenes/Foto_5.jpg",
+                    "Imagenes/Foto_6.jpg", "Imagenes/Foto_7.jpg", "Imagenes/Foto_8.jpg", "Imagenes/Foto_9.jpg", "Imagenes/Foto_10.jpg",
+                    "Imagenes/Foto_11.jpg", "Imagenes/Foto_12.jpg", "Imagenes/Foto_13.jpg", "Imagenes/Foto_14.jpg", "Imagenes/Foto_15.jpg",
+                    "Imagenes/Foto_16.jpg", "Imagenes/Foto_17.jpg"
+                ],
+                carta: {
+                    encabezado: "Querida Lina:",
+                    parrafos: [
+                        "[Escribe aquí el primer párrafo de tu carta.]",
+                        "[Cada párrafo va entre comillas y separado por una coma.]",
+                        "[Puedes agregar todos los que quieras; el pergamino se desplaza si el texto es largo.]"
+                    ],
+                    despedida: "Con cariño,",
+                    firma: "[Tu nombre]"
+                }
+            };
+
+            /* =====================================================================
+               Utilidades
+               ===================================================================== */
+            const $ = s => document.querySelector(s);
+            const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const f2 = n => Math.round(n * 100) / 100;
+            const P = (...a) => a.map(f2).join(' ');
+
+            /* =====================================================================
+               Flores en SVG
+               ===================================================================== */
+            function girasol(cx, cy, r) {
+                let s = `<g transform="translate(${cx} ${cy})">`, N = 20;
+                for (let k = 0; k < N; k++) s += `<ellipse cx="0" cy="${f2(-r * .72)}" rx="${f2(r * .17)}" ry="${f2(r * .36)}" fill="#F2A900" transform="rotate(${f2(k * 360 / N + 9)})"/>`;
+                for (let k = 0; k < N; k++) s += `<ellipse cx="0" cy="${f2(-r * .76)}" rx="${f2(r * .17)}" ry="${f2(r * .38)}" fill="#FFC928" transform="rotate(${f2(k * 360 / N)})"/>`;
+                s += `<circle r="${f2(r * .46)}" fill="#5B3A1E"/><circle r="${f2(r * .34)}" fill="#7A4A22"/>`;
+                for (let k = 1; k <= 46; k++) {
+                    const rr = r * .44 * Math.sqrt(k / 46), a = k * 2.39996;
+                    s += `<circle cx="${f2(rr * Math.cos(a))}" cy="${f2(rr * Math.sin(a))}" r="${f2(r * .028)}" fill="#3B2412"/>`;
+                }
+                return s + '</g>';
+            }
+
+            function rosa(cx, cy, r) {
+                let d = 'M0 0';
+                for (let t = 0; t <= 6 * Math.PI; t += .25) {
+                    const rr = r * .08 + r * .72 * (t / (6 * Math.PI));
+                    d += `L${f2(rr * Math.cos(t))} ${f2(rr * Math.sin(t))}`;
+                }
+                return `<g transform="translate(${cx} ${cy})">
+    <circle r="${f2(r)}" fill="#D81B60"/><circle r="${f2(r * .86)}" fill="#E5507F"/>
+    <path d="${d}" fill="none" stroke="#A3124A" stroke-width="${f2(r * .07)}" stroke-linecap="round" opacity=".85"/>
+    <path d="M${P(-r * .62, -r * .35)} Q${P(-r * .2, -r * .95, r * .5, -r * .6)}" fill="none" stroke="#FF9DB9" stroke-width="${f2(r * .09)}" stroke-linecap="round" opacity=".7"/>
+  </g>`;
+            }
+
+            function tulipan(cx, cy, w, h, rot) {
+                return `<g transform="translate(${cx} ${cy}) rotate(${rot})">
+    <path d="M0 0 C${P(-w * .62, -h * .1, -w * .55, -h * .8, -w * .2, -h)} C${P(-w * .08, -h * .65, -w * .04, -h * .3, 0, 0)}Z" fill="#E8563A"/>
+    <path d="M0 0 C${P(w * .62, -h * .1, w * .55, -h * .8, w * .2, -h)} C${P(w * .08, -h * .65, w * .04, -h * .3, 0, 0)}Z" fill="#E8563A"/>
+    <path d="M${P(-w * .32, -h * .04)} C${P(-w * .38, -h * .6, -w * .16, -h * .98, 0, -h * 1.08)} C${P(w * .16, -h * .98, w * .38, -h * .6, w * .32, -h * .04)} Q0 ${f2(h * .08)} ${P(-w * .32, -h * .04)}Z" fill="#FF8467"/>
+  </g>`;
+            }
+
+            const tallo = (x, y, tx, ty, ancho = 4) => {
+                const dy = ty - y;
+                return `<path d="M${P(x, y)} C${P(x, y + dy * .5, tx, ty - dy * .3, tx, ty)}" fill="none" stroke="#3F8347" stroke-width="${ancho}" stroke-linecap="round"/>`;
+            };
+            const hoja = (cx, cy, l, rot) =>
+                `<path d="M0 0 C${P(l * .3, -l * .35, l * .75, -l * .3, l, 0)} C${P(l * .75, l * .3, l * .3, l * .35, 0, 0)}Z" fill="#4E9F5D" transform="translate(${cx} ${cy}) rotate(${rot})"/>`;
+            const crece = (html, d, s) => `<g class="crece" style="--d:${d}s"><g class="mece" style="--s:${s}s">${html}</g></g>`;
+
+            function girasolCompleto(cx, cy, r, tx, ty, d, s) {
+                const mx = (cx + tx) / 2, my = (cy + ty) / 2;
+                return crece(
+                    tallo(cx, cy + r * .9, tx, ty, 6) +
+                    hoja(mx, my, 34, -30) + hoja(mx, my + 26, 34, 210) +
+                    girasol(cx, cy, r), d, s);
+            }
+
+            function balon(cx, cy, r) {
+                let pts = '', rayas = '';
+                for (let k = 0; k < 5; k++) {
+                    const a = (-90 + 72 * k) * Math.PI / 180;
+                    pts += `${f2(r * .42 * Math.cos(a))},${f2(r * .42 * Math.sin(a))} `;
+                    rayas += `<line x1="${f2(r * .42 * Math.cos(a))}" y1="${f2(r * .42 * Math.sin(a))}" x2="${f2(r * .95 * Math.cos(a))}" y2="${f2(r * .95 * Math.sin(a))}" stroke="#1F2933" stroke-width="1.3"/>`;
+                }
+                return `<g transform="translate(${cx} ${cy})">
+    <ellipse cx="0" cy="${f2(r * 1.02)}" rx="${f2(r * .9)}" ry="${f2(r * .18)}" fill="rgba(0,0,0,.15)"/>
+    <circle r="${r}" fill="#fff" stroke="#1F2933" stroke-width="1.5"/>${rayas}
+    <polygon points="${pts}" fill="#1F2933"/></g>`;
+            }
+
+            const TROMPETA = `<svg viewBox="0 0 160 100">
+  <g fill="none" stroke="#F6B40E" stroke-width="9" stroke-linecap="round">
+    <path d="M14 58 H112"/><path d="M38 58 C30 20 92 20 84 58" stroke-width="6"/>
+  </g>
+  <path d="M108 50 L152 22 Q158 60 152 98 L108 68 Z" fill="#F6B40E" stroke="#D69A00" stroke-width="2" stroke-linejoin="round"/>
+  <g stroke="#B8860B" stroke-width="4" stroke-linecap="round"><path d="M54 58 V38"/><path d="M66 58 V38"/><path d="M78 58 V38"/></g>
+  <circle cx="12" cy="58" r="6" fill="#D69A00"/>
+</svg>`;
+
+            /* =====================================================================
+               Construcción de la escena
+               ===================================================================== */
+            $('#gate-flor').innerHTML = girasol(100, 100, 82);
+            $('#gate-titulo').textContent = `Para ${CONFIG.nombre}`;
+            $('#t1').textContent = CONFIG.titulo;
+            $('#t2').textContent = CONFIG.nombre;
+            if (CONFIG.edad) $('#edad b').textContent = CONFIG.edad; else $('#edad').remove();
+            $('#dedicatoria').textContent = CONFIG.dedicatoria;
+            document.querySelectorAll('.trompeta').forEach(t => t.innerHTML = TROMPETA);
+
+            const tulipanes = [[128, 455, 40, 54, -20, 1.2], [272, 455, 40, 54, 20, 1.3], [166, 414, 38, 52, -8, 1.4], [234, 414, 38, 52, 8, 1.5]];
+            const rosas = [[200, 440, 34, 1.7], [165, 480, 30, 1.85], [235, 480, 30, 2.0]];
+            let ramo = '<rect x="100" y="330" width="200" height="345" fill="transparent"/>';
+            tulipanes.forEach(([x, y, w, h, rot, d], i) => ramo += crece(tallo(x, y, 200, 590, 4) + tulipan(x, y, w, h, rot), d, -i * .7));
+            ramo += crece(hoja(190, 522, 60, 200) + hoja(210, 522, 60, -20) + hoja(175, 530, 48, 225) + hoja(225, 530, 48, -45), 1.6, -.4);
+            rosas.forEach(([x, y, r, d], i) => ramo += crece(tallo(x, y + r * .6, 200, 590, 4) + rosa(x, y, r), d, -i * .9 - .3));
+            let rayas = '';
+            for (let x = 120; x < 290; x += 24) rayas += `<rect x="${x}" y="520" width="12" height="160" fill="#75AADB"/>`;
+            ramo += `<g class="crece" style="--d:2.1s">
+  <g clip-path="url(#cpEnv)"><polygon points="126,528 274,528 224,674 176,674" fill="#fff"/>${rayas}</g>
+  <polygon points="126,528 274,528 224,674 176,674" fill="none" stroke="#5c8fbf" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M126 528 Q200 548 274 528" fill="none" stroke="#5c8fbf" stroke-width="1.5"/>
+  <path d="M196 572 L184 606 L197 599 L201 608 Z M204 572 L216 606 L203 599 L199 608 Z" fill="#E39F00"/>
+  <path d="M200 566 C${P(160, 536, 158, 596, 200, 568)} C${P(242, 596, 240, 536, 200, 566)}Z" fill="#F6B40E" stroke="#D69A00" stroke-width="1.5"/>
+  <circle cx="200" cy="567" r="7" fill="#E39F00"/></g>`;
+
+            $('#escena').innerHTML = `
+  <defs><clipPath id="cpEnv"><polygon points="126,528 274,528 224,674 176,674"/></clipPath></defs>
+  ${girasolCompleto(70, 330, 46, 86, 700, .3, -.5)}
+  ${girasolCompleto(336, 298, 52, 322, 700, .5, -1.5)}
+  ${girasolCompleto(204, 262, 44, 200, 585, .7, -2.5)}
+  ${girasolCompleto(28, 470, 28, 40, 700, .9, -3)}
+  ${girasolCompleto(374, 462, 30, 362, 700, 1, -3.5)}
+  <path d="M0 700 V670 Q50 656 110 668 T230 664 T340 668 T400 662 V700Z" fill="#A9D8A6"/>
+  <path d="M0 700 V684 Q70 674 140 684 T280 682 T400 680 V700Z" fill="#8CC58D"/>
+  ${balon(72, 664, 18)}
+  <g id="ramo" role="button" tabindex="0" aria-label="Abrir la carta">${ramo}</g>
+  <g id="pista" pointer-events="none">
+    <circle class="pulso" cx="200" cy="450" r="100" fill="none" stroke="#fff" stroke-width="4"/>
+    <rect x="135" y="316" width="130" height="30" rx="15" fill="#fff" opacity=".92"/>
+    <text x="200" y="336" text-anchor="middle" font-size="15" font-weight="700" fill="#1F4E79">Toca el ramo</text>
+  </g>`;
+
+            /* Fotos al fondo del jardín, en anillo alrededor del ramo */
+            const nF = CONFIG.fotos.length;
+            const ancho = nF > 10 ? 'clamp(64px,17vmin,120px)' : 'clamp(74px,21vmin,150px)';
+            CONFIG.fotos.forEach((src, i) => {
+                /* arco de 220° por encima del ramo; con más de 9 fotos se alternan dos anillos */
+                const a = (-200 + (nF > 1 ? i * 220 / (nF - 1) : 110)) * Math.PI / 180;
+                const dentro = nF > 9 && i % 2;
+                const rx = dentro ? 31 : 43, ry = dentro ? 25 : 34;
+                const d = document.createElement('div');
+                d.className = 'pol';
+                d.style.cssText = `left:${f2(50 + rx * Math.cos(a))}%;top:${f2(55 + ry * Math.sin(a))}%;--w:${ancho};--i:${i};--r:${(i * 37) % 13 - 6}deg`;
+                const img = new Image();
+                img.alt = `Foto ${i + 1}`;
+                img.onerror = () => {
+                    const ph = document.createElement('div');
+                    ph.className = 'ph-i'; ph.textContent = `foto ${i + 1}`;
+                    img.replaceWith(ph); d.classList.add('ph');
+                };
+                img.src = src;
+                d.appendChild(img);
+                $('#fotos').appendChild(d);
+            });
+
+            /* Pétalos cayendo */
+            const colPetalos = ['#E0457B', '#F48FB1', '#F6B40E', '#FF8467'];
+            for (let i = 0; i < 14; i++) {
+                const p = document.createElement('i');
+                p.className = 'petalo';
+                p.style.cssText = `left:${f2(Math.random() * 100)}%;background:${colPetalos[i % 4]};--dx:${f2((Math.random() - .5) * 120)}px;` +
+                    `animation-duration:${f2(9 + Math.random() * 8)}s;animation-delay:${f2(-Math.random() * 14)}s;` +
+                    `width:${f2(8 + Math.random() * 7)}px;height:${f2(10 + Math.random() * 8)}px`;
+                $('#petalos').appendChild(p);
+            }
+
+            /* Carta */
+            const cont = $('#contenido'); let k = 0;
+            const add = (tag, txt, cls) => {
+                const e = document.createElement(tag);
+                e.textContent = txt; if (cls) e.className = cls;
+                e.style.setProperty('--k', k++); cont.appendChild(e);
+            };
+            add('h2', CONFIG.carta.encabezado);
+            CONFIG.carta.parrafos.forEach(t => add('p', t));
+            add('p', CONFIG.carta.despedida, 'cierre');
+            add('p', CONFIG.carta.firma, 'firma');
+            add('div', '10', 'sello');
+
+            /* =====================================================================
+               Confeti (canvas)
+               ===================================================================== */
+            const cv = $('#confeti'), cx = cv.getContext('2d');
+            let partes = [], raf = 0;
+            const ajusta = () => {
+                const d = window.devicePixelRatio || 1;
+                cv.width = innerWidth * d; cv.height = innerHeight * d;
+                cx.setTransform(d, 0, 0, d, 0, 0);
+            };
+            addEventListener('resize', ajusta); ajusta();
+            const COLS = ['#75AADB', '#ffffff', '#F6B40E', '#E0457B', '#FF8467', '#9CCC9F'];
+
+            function estallido(x, y, dir = 0, n = 90) {
+                const N = reducido ? Math.min(n, 25) : n;
+                for (let i = 0; i < N; i++) {
+                    const a = -Math.PI / 2 + dir + (Math.random() - .5) * 1.1, v = 6 + Math.random() * 9;
+                    partes.push({
+                        x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, w: 5 + Math.random() * 6, h: 3 + Math.random() * 4,
+                        r: Math.random() * 6.28, vr: (Math.random() - .5) * .4, c: COLS[i % COLS.length], vida: 0
+                    });
+                }
+                if (!raf) raf = requestAnimationFrame(paso);
+            }
+            function paso() {
+                cx.clearRect(0, 0, innerWidth, innerHeight);
+                partes = partes.filter(p => p.y < innerHeight + 20 && p.vida < 260);
+                for (const p of partes) {
+                    p.vy += .28; p.vx *= .99; p.vy *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.vida++;
+                    cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r); cx.fillStyle = p.c;
+                    cx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); cx.restore();
+                }
+                raf = partes.length ? requestAnimationFrame(paso) : 0;
+            }
+
+            /* =====================================================================
+               Sonido: fanfarria sintetizada (no requiere archivo) y canción
+               ===================================================================== */
+            let ctx = null;
+            function iniciaAudio() {
+                try {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    if (AC) { ctx = new AC(); ctx.resume(); }
+                } catch (e) { ctx = null; }
+            }
+            function nota(freq, t0, dur, vol = .2) {
+                const g = ctx.createGain(), f = ctx.createBiquadFilter();
+                f.type = 'lowpass';
+                f.frequency.setValueAtTime(700, t0);
+                f.frequency.linearRampToValueAtTime(2600, t0 + .06);
+                f.frequency.linearRampToValueAtTime(1400, t0 + dur);
+                g.gain.setValueAtTime(0, t0);
+                g.gain.linearRampToValueAtTime(vol, t0 + .03);
+                g.gain.setValueAtTime(vol, Math.max(t0 + .04, t0 + dur - .08));
+                g.gain.linearRampToValueAtTime(0, t0 + dur);
+                f.connect(g); g.connect(ctx.destination);
+                ['sawtooth', 'square'].forEach((tipo, i) => {
+                    const o = ctx.createOscillator();
+                    o.type = tipo; o.frequency.value = freq; o.detune.value = i * 6;
+                    o.connect(f); o.start(t0); o.stop(t0 + dur + .02);
+                });
+            }
+            function fanfarria() {
+                if (!ctx) return;
+                const t = ctx.currentTime + .05;
+                [[392, 0, .16], [392, .2, .16], [392, .4, .16], [523.25, .62, .55], [659.25, 1.25, .25]].forEach(([f, d, l]) => nota(f, t + d, l));
+                [[784, 1.55, 1.1], [659.25, 1.55, 1.1], [523.25, 1.55, 1.1]].forEach(([f, d, l]) => nota(f, t + d, l, .12));
+            }
+
+            const musica = new Audio(CONFIG.cancion);
+            musica.loop = true; musica.preload = 'auto';
+            const btnMusica = $('#musica');
+            let sonando = false;
+            function iniciaMusica() {
+                if (sonando) return;
+                sonando = true; musica.volume = 0;
+                musica.play().then(() => {
+                    btnMusica.hidden = false;
+                    let v = 0;
+                    const t = setInterval(() => { v = Math.min(.85, v + .05); musica.volume = v; if (v >= .85) clearInterval(t); }, 120);
+                }).catch(() => { sonando = false; });
+            }
+            btnMusica.addEventListener('click', () => {
+                musica.muted = !musica.muted;
+                btnMusica.classList.toggle('off', musica.muted);
+            });
+
+            /* =====================================================================
+               Flujo: apertura → intro → jardín → carta
+               ===================================================================== */
+            const etapas = ['gate', 'intro', 'jardin'].map(id => $('#' + id));
+            const ir = id => etapas.forEach(e => e.classList.toggle('activa', e.id === id));
+            const espera = (ms, fn) => setTimeout(fn, ms);
+
+            function rafaga(sel) {
+                const r = $(sel).getBoundingClientRect(), izq = sel.includes('izq');
+                estallido(izq ? r.right - r.width * .06 : r.left + r.width * .06, r.top + r.height * .12, izq ? .45 : -.45);
+            }
+
+            let iniciado = false;
+            $('#gate').addEventListener('click', () => {
+                if (iniciado) return;
+                iniciado = true;
+                iniciaAudio(); ir('intro'); fanfarria();
+                espera(650, () => { rafaga('.trompeta.izq'); rafaga('.trompeta.der'); });
+                espera(1600, () => { rafaga('.trompeta.izq'); rafaga('.trompeta.der'); });
+                espera(2500, () => estallido(innerWidth / 2, innerHeight * .8, 0, 120));
+                espera(4600, () => { ir('jardin'); estallido(innerWidth / 2, innerHeight * .8, 0, 70); });
+            });
+
+            const carta = $('#carta'), pergamino = $('#pergamino'), papel = $('#papel');
+            let timerScroll = 0;
+            function abrirCarta() {
+                carta.classList.add('on'); carta.setAttribute('aria-hidden', 'false');
+                requestAnimationFrame(() => requestAnimationFrame(() => pergamino.classList.add('abierta')));
+                clearTimeout(timerScroll);
+                timerScroll = setTimeout(() => papel.classList.add('scroll'), 1700);
+                $('#pista').classList.add('oculta');
+                iniciaMusica();
+                estallido(innerWidth / 2, innerHeight * .62, 0, 60);
+            }
+            function cerrarCarta() {
+                carta.classList.remove('on'); carta.setAttribute('aria-hidden', 'true');
+                pergamino.classList.remove('abierta'); papel.classList.remove('scroll');
+                papel.scrollTop = 0;
+            }
+            const elRamo = $('#ramo');
+            elRamo.addEventListener('click', abrirCarta);
+            elRamo.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirCarta(); } });
+            $('#cerrar').addEventListener('click', cerrarCarta);
+            carta.addEventListener('click', e => { if (e.target === carta) cerrarCarta(); });
+            addEventListener('keydown', e => { if (e.key === 'Escape') { cerrarCarta(); $('#visor').classList.remove('on'); } });
+
+            /* Ampliar una foto al tocarla */
+            const visor = $('#visor');
+            $('#fotos').addEventListener('click', e => {
+                const im = e.target.closest('.pol img');
+                if (!im) return;
+                visor.querySelector('img').src = im.src;
+                visor.classList.add('on');
+            });
+            visor.addEventListener('click', () => visor.classList.remove('on'));
+        })();
+    </script>
+</body>
+
+</html>
