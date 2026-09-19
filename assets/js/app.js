@@ -348,7 +348,8 @@
             let timerScroll = 0, focoCarta = null;
             function abrirCarta() {
                 focoCarta = document.activeElement;
-                carta.classList.add('on'); carta.setAttribute('aria-hidden', 'false');
+                carta.inert = false;
+                carta.classList.add('on');
                 requestAnimationFrame(() => requestAnimationFrame(() => pergamino.classList.add('abierta')));
                 clearTimeout(timerScroll);
                 timerScroll = setTimeout(() => papel.classList.add('scroll'), 1700);
@@ -358,9 +359,10 @@
             }
             function cerrarCarta() {
                 if (!carta.classList.contains('on')) return;
-                carta.classList.remove('on'); carta.setAttribute('aria-hidden', 'true');
+                carta.classList.remove('on');
                 pergamino.classList.remove('abierta'); papel.classList.remove('scroll');
                 papel.scrollTop = 0;
+                carta.inert = true;
                 focoCarta?.focus();
             }
             const elRamo = $('#ramo');
@@ -375,13 +377,15 @@
                 focoVisor = document.activeElement;
                 imagenVisor.src = imagen.currentSrc || imagen.src;
                 imagenVisor.alt = imagen.alt;
-                visor.classList.add('on'); visor.setAttribute('aria-hidden', 'false');
+                visor.inert = false;
+                visor.classList.add('on');
                 $('#cerrar-visor').focus();
             }
             function cerrarVisor() {
                 if (!visor.classList.contains('on')) return;
-                visor.classList.remove('on'); visor.setAttribute('aria-hidden', 'true');
+                visor.classList.remove('on');
                 imagenVisor.removeAttribute('src');
+                visor.inert = true;
                 focoVisor?.focus();
             }
             addEventListener('keydown', e => {
