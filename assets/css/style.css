@@ -336,6 +336,13 @@
             animation: mece-ramo 7s -3.5s ease-in-out infinite alternate
         }
 
+<<<<<<< HEAD
+=======
+        #escena image {
+            image-rendering: auto
+        }
+
+>>>>>>> 0b21f911cfa0ff8f84693d4523d7ff5b4257873a
         @keyframes mece-ramo {
             from {
                 transform: rotate(-1.5deg) translateY(0.5px);

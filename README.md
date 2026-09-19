@@ -46,7 +46,11 @@ Mantenga exactamente las mayúsculas y minúsculas de los nombres de archivo: lo
 - El ramo se puede abrir con clic, `Enter` o barra espaciadora; `Esc` cierra la carta y el visor de fotos.
 - Se respeta `prefers-reduced-motion` para reducir las animaciones.
 - Las fotografías pueden ampliarse al seleccionarlas.
+<<<<<<< HEAD
 - El jardín usa los PNG transparentes de `Flores/`, incluido `Ramo.png` como elemento central interactivo.
+=======
+- El jardín usa los PNG de girasol, tulipán y rosa de `Flores/`; sus fondos claros se integran sobre el escenario.
+>>>>>>> 0b21f911cfa0ff8f84693d4523d7ff5b4257873a
 - En equipos táctiles, los controles mantienen objetivos de al menos 44 px y se ajustan el contenido y la carta para pantallas estrechas u horizontales.
 
 ## Estado actual y comprobaciones
