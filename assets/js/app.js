@@ -33,10 +33,7 @@
                 girasol1: 'Flores/Girasol_1.png',
                 girasol2: 'Flores/Girasol_2.png',
                 girasol3: 'Flores/Girasol_3.png',
-<<<<<<< HEAD
                 ramo: 'Flores/Ramo.png',
-=======
->>>>>>> 0b21f911cfa0ff8f84693d4523d7ff5b4257873a
                 rosa: 'Flores/Rosa.png',
                 tulipan: 'Flores/tulipan.png'
             };
@@ -101,16 +98,12 @@
                     girasol(cx, cy, r), d, s);
             }
 
-            function florDeReferencia(src, x, y, w, h, d, s, rot = 0) {
+            function florDeReferencia(src, x, baseY, w, h, d, s, rot = 0) {
+                const y = baseY - h;
                 const cx = f2(x + w / 2), cy = f2(y + h);
                 return crece(
                     `<image href="${src}" x="${x}" y="${y}" width="${w}" height="${h}" ` +
-<<<<<<< HEAD
                     `preserveAspectRatio="xMidYMid meet" transform="rotate(${rot} ${cx} ${cy})"/>`, d, s
-=======
-                    `preserveAspectRatio="xMidYMid meet" transform="rotate(${rot} ${cx} ${cy})" ` +
-                    `style="mix-blend-mode:multiply"/>`, d, s
->>>>>>> 0b21f911cfa0ff8f84693d4523d7ff5b4257873a
                 );
             }
 
@@ -147,46 +140,23 @@
             $('#dedicatoria').textContent = CONFIG.dedicatoria;
             document.querySelectorAll('.trompeta').forEach(t => t.innerHTML = TROMPETA);
 
-<<<<<<< HEAD
             const ramo = `<image href="${FLORES.ramo}" x="12" y="170" width="376" height="503" preserveAspectRatio="xMidYMid meet"/>`;
 
             $('#escena').innerHTML = `
-=======
-            const tulipanes = [[128, 455, 40, 54, -20, 1.2], [272, 455, 40, 54, 20, 1.3], [166, 414, 38, 52, -8, 1.4], [234, 414, 38, 52, 8, 1.5]];
-            const rosas = [[200, 440, 34, 1.7], [165, 480, 30, 1.85], [235, 480, 30, 2.0]];
-            let ramo = '<rect x="100" y="330" width="200" height="345" fill="transparent"/>';
-            tulipanes.forEach(([x, y, w, h, rot, d], i) => ramo += crece(tallo(x, y, 200, 590, 4) + tulipan(x, y, w, h, rot), d, -i * .7));
-            ramo += crece(hoja(190, 522, 60, 200) + hoja(210, 522, 60, -20) + hoja(175, 530, 48, 225) + hoja(225, 530, 48, -45), 1.6, -.4);
-            rosas.forEach(([x, y, r, d], i) => ramo += crece(tallo(x, y + r * .6, 200, 590, 4) + rosa(x, y, r), d, -i * .9 - .3));
-            let rayas = '';
-            for (let x = 120; x < 290; x += 24) rayas += `<rect x="${x}" y="520" width="12" height="160" fill="#75AADB"/>`;
-            ramo += `<g class="crece" style="--d:2.1s">
-  <g clip-path="url(#cpEnv)"><polygon points="126,528 274,528 224,674 176,674" fill="#fff"/>${rayas}</g>
-  <polygon points="126,528 274,528 224,674 176,674" fill="none" stroke="#5c8fbf" stroke-width="1.5" stroke-linejoin="round"/>
-  <path d="M126 528 Q200 548 274 528" fill="none" stroke="#5c8fbf" stroke-width="1.5"/>
-  <path d="M196 572 L184 606 L197 599 L201 608 Z M204 572 L216 606 L203 599 L199 608 Z" fill="#E39F00"/>
-  <path d="M200 566 C${P(160, 536, 158, 596, 200, 568)} C${P(242, 596, 240, 536, 200, 566)}Z" fill="#F6B40E" stroke="#D69A00" stroke-width="1.5"/>
-  <circle cx="200" cy="567" r="7" fill="#E39F00"/></g>`;
-
-            $('#escena').innerHTML = `
-  <defs><clipPath id="cpEnv"><polygon points="126,528 274,528 224,674 176,674"/></clipPath></defs>
->>>>>>> 0b21f911cfa0ff8f84693d4523d7ff5b4257873a
-  ${florDeReferencia(FLORES.girasol1, -62, 282, 206, 307, .3, -.5, -3)}
-  ${florDeReferencia(FLORES.girasol2, 252, 250, 198, 295, .5, -1.5, 3)}
-  ${florDeReferencia(FLORES.girasol3, 115, 222, 170, 253, .7, -2.5)}
-  ${florDeReferencia(FLORES.tulipan, 22, 433, 128, 191, .9, -3, -7)}
-  ${florDeReferencia(FLORES.rosa, 254, 418, 128, 191, 1, -3.5, 6)}
   <path d="M0 700 V670 Q50 656 110 668 T230 664 T340 668 T400 662 V700Z" fill="#A9D8A6"/>
   <path d="M0 700 V684 Q70 674 140 684 T280 682 T400 680 V700Z" fill="#8CC58D"/>
+  <path d="M0 681 Q74 670 140 681 T280 679 T400 677" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="3"/>
+  <ellipse cx="200" cy="665" rx="118" ry="13" fill="rgba(63,131,71,.16)"/>
+  ${florDeReferencia(FLORES.girasol1, -62, 664, 206, 307, .3, -.5, -3)}
+  ${florDeReferencia(FLORES.girasol2, 252, 660, 198, 295, .5, -1.5, 3)}
+  ${florDeReferencia(FLORES.girasol3, 115, 658, 170, 253, .7, -2.5)}
+  ${florDeReferencia(FLORES.tulipan, 22, 662, 128, 191, .9, -3, -7)}
+  ${florDeReferencia(FLORES.rosa, 254, 663, 128, 191, 1, -3.5, 6)}
   ${balon(72, 664, 18)}
-<<<<<<< HEAD
   <g id="ramo" role="button" tabindex="0" aria-label="Abrir la carta">
     ${ramo}
     <rect x="48" y="250" width="304" height="340" fill="transparent"/>
   </g>
-=======
-  <g id="ramo" role="button" tabindex="0" aria-label="Abrir la carta">${ramo}</g>
->>>>>>> 0b21f911cfa0ff8f84693d4523d7ff5b4257873a
   <g id="pista" pointer-events="none">
     <circle class="pulso" cx="200" cy="450" r="100" fill="none" stroke="#fff" stroke-width="4"/>
     <rect x="135" y="316" width="130" height="30" rx="15" fill="#fff" opacity=".92"/>

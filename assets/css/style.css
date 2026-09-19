@@ -66,6 +66,32 @@
             visibility: visible
         }
 
+        /* Jardín: cielo con profundidad, luz cálida y nubes muy sutiles. */
+        #jardin {
+            isolation: isolate;
+            background:
+                radial-gradient(circle at 82% 16%, rgba(255, 238, 170, .88) 0 6%, transparent 16%),
+                radial-gradient(ellipse at 18% 26%, rgba(255, 255, 255, .72) 0 7%, transparent 15%),
+                linear-gradient(180deg, #9ed7f4 0%, #dff2fa 48%, #f8f4d6 100%)
+        }
+
+        #jardin::before {
+            z-index: 0;
+            opacity: .56;
+            background:
+                radial-gradient(ellipse at 42% 13%, rgba(255, 255, 255, .82) 0 6%, transparent 13%),
+                radial-gradient(ellipse at 68% 34%, rgba(255, 255, 255, .58) 0 5%, transparent 12%),
+                repeating-linear-gradient(90deg, rgba(255, 255, 255, .16) 0 44px, transparent 44px 88px);
+            animation: respira-cielo 22s ease-in-out infinite alternate
+        }
+
+        @keyframes respira-cielo {
+            to {
+                opacity: .78;
+                transform: scale(1.04)
+            }
+        }
+
         /* Pantalla de apertura */
         #gate {
             display: flex;
@@ -314,7 +340,8 @@
             right: 0;
             bottom: 0;
             height: 3vh;
-            background: #8CC58D;
+            background: linear-gradient(180deg, #a9d8a6 0%, #78b97d 100%);
+            box-shadow: 0 -5px 12px rgba(63, 131, 71, .16);
             z-index: 2
         }
 
@@ -328,6 +355,27 @@
             pointer-events: none
         }
 
+        #jardin.activa #escena {
+            animation: entra-escena .9s .35s cubic-bezier(.2, .8, .3, 1) both
+        }
+
+        @keyframes entra-escena {
+            from {
+                opacity: 0;
+                transform: translateY(26px) scale(.98)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        #escena .crece,
+        #escena #ramo {
+            filter: drop-shadow(0 8px 5px rgba(31, 78, 121, .16))
+        }
+
         #escena #ramo {
             pointer-events: auto;
             cursor: pointer;
@@ -336,13 +384,17 @@
             animation: mece-ramo 7s -3.5s ease-in-out infinite alternate
         }
 
-<<<<<<< HEAD
-=======
-        #escena image {
-            image-rendering: auto
+        @media (hover: hover) {
+            #escena #ramo:hover {
+                scale: 1.035;
+                filter: drop-shadow(0 12px 8px rgba(31, 78, 121, .24))
+            }
         }
 
->>>>>>> 0b21f911cfa0ff8f84693d4523d7ff5b4257873a
+        #escena #ramo:active {
+            scale: .98
+        }
+
         @keyframes mece-ramo {
             from {
                 transform: rotate(-1.5deg) translateY(0.5px);
@@ -495,7 +547,14 @@
         }
 
         #pista {
-            transition: opacity .5s
+            transition: opacity .5s;
+            animation: flota-pista 2.4s ease-in-out infinite alternate
+        }
+
+        @keyframes flota-pista {
+            to {
+                transform: translateY(-7px)
+            }
         }
 
         #pista.oculta {
