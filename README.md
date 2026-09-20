@@ -22,6 +22,7 @@ Edite el objeto `CONFIG`, situado al inicio de [`assets/js/app.js`](assets/js/ap
 
 - `nombre`, `edad`, `titulo` y `dedicatoria` cambian los textos de la felicitación.
 - `fotos` contiene las rutas de las imágenes del jardín. Actualmente están configuradas las 17 fotos de `Imagenes/`.
+- `revelarFotosAlTocar` controla la privacidad inicial de la galería: con `true`, el primer toque revela una foto y el siguiente la amplía; con `false`, se muestran desde el inicio.
 - `carta` define el encabezado, párrafos, despedida y firma del pergamino.
 - `cancion` define la ruta del audio de fondo. Si no se desea música, elimine o adapte esa parte de la configuración y de la lógica de audio.
 
@@ -52,7 +53,7 @@ Mantenga exactamente las mayúsculas y minúsculas de los nombres de archivo: lo
 ## Estado actual y comprobaciones
 
 - Las 17 rutas de fotos configuradas existen y el JavaScript externo supera la comprobación de sintaxis.
-- La música de fondo usa `audio/bff.webm`; conserve esa ruta o actualice `CONFIG.cancion` si sustituye el archivo.
+- La música de fondo usa `audio/bff.m4a`, una versión más ligera; conserve esa ruta o actualice `CONFIG.cancion` si sustituye el archivo.
 - El contenido de la carta conserva textos de plantilla (`[Escribe aquí…]` y `[Tu nombre]`); debe personalizarse antes de compartir la tarjeta.
 - Los metadatos Open Graph y la URL canónica ya apuntan a la publicación de GitHub Pages; cámbielos si el repositorio o el dominio se mueven.
 

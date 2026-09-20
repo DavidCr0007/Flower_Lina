@@ -225,8 +225,8 @@
 
         .trompeta {
             position: absolute;
-            bottom: 3vh;
-            width: min(36vw, 190px);
+            bottom: 2vh;
+            width: min(40vw, 210px);
             translate: 0 140%;
             z-index: 0
         }
@@ -254,7 +254,7 @@
         }
 
         #intro.activa .trompeta {
-            animation: sube-t .7s .1s ease-out both, toot .45s .7s ease-in-out 4
+            animation: sube-t .75s .1s cubic-bezier(.2, .9, .3, 1.18) both, toque-real .4s .9s ease-in-out 4
         }
 
         @keyframes sube-t {
@@ -263,9 +263,10 @@
             }
         }
 
-        @keyframes toot {
+        @keyframes toque-real {
             50% {
-                scale: 1.12
+                scale: 1.13;
+                filter: drop-shadow(0 0 8px rgba(255, 213, 91, .9))
             }
         }
 
@@ -425,7 +426,62 @@
             border: 0;
             font: inherit;
             color: inherit;
-            text-align: inherit
+            text-align: inherit;
+            overflow: hidden
+        }
+
+        .pol img {
+            transition: filter .45s ease, transform .45s ease
+        }
+
+        .pol::after {
+            content: attr(data-pista);
+            position: absolute;
+            inset: 5px 5px 18px;
+            z-index: 1;
+            display: grid;
+            place-items: center;
+            padding: 8px;
+            border-radius: 2px;
+            background: rgba(31, 78, 121, .56);
+            color: #fff;
+            font-size: clamp(11px, 2.8vmin, 14px);
+            font-weight: 700;
+            line-height: 1.2;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .35s ease
+        }
+
+        .pol.por-descubrir {
+            cursor: pointer
+        }
+
+        .pol.por-descubrir img {
+            filter: blur(12px) saturate(.7);
+            transform: scale(1.08)
+        }
+
+        .pol.por-descubrir::after {
+            opacity: 1
+        }
+
+        .pol.revelada img {
+            animation: revela-foto .5s ease-out
+        }
+
+        @keyframes revela-foto {
+            from {
+                transform: scale(1.08)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        .pol:disabled {
+            cursor: default
         }
 
         @media (pointer: coarse) {

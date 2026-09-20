@@ -9,13 +9,14 @@
                 edad: 23,                              // null para ocultarla
                 titulo: "¡Feliz cumpleaños!",
                 dedicatoria: "Para mi 10",
-                cancion: "audio/bff.webm",             // ruta relativa; respeta mayúsculas/minúsculas
+                cancion: "audio/bff.m4a",              // audio optimizado para una carga más rápida
                 fotos: [                               // entre 7 y 15; si falta un archivo se muestra un marco vacío
                     "Imagenes/Foto_1.jpg", "Imagenes/Foto_2.jpg", "Imagenes/Foto_3.jpg", "Imagenes/Foto_4.jpg", "Imagenes/Foto_5.jpg",
                     "Imagenes/Foto_6.jpg", "Imagenes/Foto_7.jpg", "Imagenes/Foto_8.jpg", "Imagenes/Foto_9.jpg", "Imagenes/Foto_10.jpg",
                     "Imagenes/Foto_11.jpg", "Imagenes/Foto_12.jpg", "Imagenes/Foto_13.jpg", "Imagenes/Foto_14.jpg", "Imagenes/Foto_15.jpg",
                     "Imagenes/Foto_16.jpg", "Imagenes/Foto_17.jpg"
                 ],
+                revelarFotosAlTocar: true,              // primer toque revela; el siguiente amplía la foto
                 carta: {
                     encabezado: "Querida Lina:",
                     parrafos: [
@@ -120,13 +121,15 @@
     <polygon points="${pts}" fill="#1F2933"/></g>`;
             }
 
-            const TROMPETA = `<svg viewBox="0 0 160 100">
-  <g fill="none" stroke="#F6B40E" stroke-width="9" stroke-linecap="round">
-    <path d="M14 58 H112"/><path d="M38 58 C30 20 92 20 84 58" stroke-width="6"/>
-  </g>
-  <path d="M108 50 L152 22 Q158 60 152 98 L108 68 Z" fill="#F6B40E" stroke="#D69A00" stroke-width="2" stroke-linejoin="round"/>
-  <g stroke="#B8860B" stroke-width="4" stroke-linecap="round"><path d="M54 58 V38"/><path d="M66 58 V38"/><path d="M78 58 V38"/></g>
-  <circle cx="12" cy="58" r="6" fill="#D69A00"/>
+            const TROMPETA = `<svg viewBox="0 0 190 130" aria-hidden="true">
+  <path d="M18 58 H131" fill="none" stroke="#E8A51A" stroke-width="12" stroke-linecap="round"/>
+  <path d="M42 58 C31 13 105 13 94 58" fill="none" stroke="#F8C84E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M126 47 L175 18 Q184 63 175 108 L126 72 Z" fill="#F6B40E" stroke="#B97908" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M140 45 L166 30 Q170 61 166 91 L140 76 Z" fill="#FFD76B" opacity=".72"/>
+  <g fill="#B97908"><circle cx="61" cy="58" r="5"/><circle cx="76" cy="58" r="5"/><circle cx="91" cy="58" r="5"/></g>
+  <path d="M76 68 H121 L115 113 L99 103 L83 113 Z" fill="#7E2345" stroke="#F6C34A" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M91 86 L96 77 L101 86 L106 75 L111 86 V94 H91 Z" fill="#F8D05B"/>
+  <path d="M22 51 L29 43 L35 51" fill="none" stroke="#FFF3B8" stroke-width="3" stroke-linecap="round"/>
 </svg>`;
 
             /* =====================================================================
@@ -174,14 +177,23 @@
                 const d = document.createElement('button');
                 d.type = 'button';
                 d.className = 'pol';
-                d.setAttribute('aria-label', `Ampliar foto ${i + 1}`);
+                d.dataset.indice = String(i + 1);
+                if (CONFIG.revelarFotosAlTocar) {
+                    d.classList.add('por-descubrir');
+                    d.dataset.pista = 'Toca para descubrir';
+                    d.setAttribute('aria-label', `Descubrir foto ${i + 1}`);
+                } else {
+                    d.setAttribute('aria-label', `Ampliar foto ${i + 1}`);
+                }
                 d.style.cssText = `left:${f2(50 + rx * Math.cos(a))}%;top:${f2(55 + ry * Math.sin(a))}%;--w:${ancho};--i:${i};--r:${(i * 37) % 13 - 6}deg`;
                 const img = new Image();
                 img.alt = `Foto ${i + 1}`;
                 img.onerror = () => {
                     const ph = document.createElement('span');
                     ph.className = 'ph-i'; ph.textContent = `foto ${i + 1}`;
-                    img.replaceWith(ph); d.classList.add('ph');
+                    img.replaceWith(ph); d.classList.remove('por-descubrir');
+                    d.classList.add('ph'); d.disabled = true;
+                    d.setAttribute('aria-label', `Foto ${i + 1} no disponible`);
                 };
                 img.src = src;
                 d.appendChild(img);
@@ -259,26 +271,31 @@
             }
             function nota(freq, t0, dur, vol = .2) {
                 const g = ctx.createGain(), f = ctx.createBiquadFilter();
-                f.type = 'lowpass';
-                f.frequency.setValueAtTime(700, t0);
-                f.frequency.linearRampToValueAtTime(2600, t0 + .06);
-                f.frequency.linearRampToValueAtTime(1400, t0 + dur);
+                f.type = 'bandpass';
+                f.Q.value = 1.1;
+                f.frequency.setValueAtTime(850, t0);
+                f.frequency.linearRampToValueAtTime(2200, t0 + .045);
+                f.frequency.linearRampToValueAtTime(1500, t0 + dur);
                 g.gain.setValueAtTime(0, t0);
-                g.gain.linearRampToValueAtTime(vol, t0 + .03);
-                g.gain.setValueAtTime(vol, Math.max(t0 + .04, t0 + dur - .08));
+                g.gain.linearRampToValueAtTime(vol, t0 + .025);
+                g.gain.exponentialRampToValueAtTime(Math.max(.02, vol * .62), t0 + Math.min(.12, dur * .5));
+                g.gain.setValueAtTime(Math.max(.02, vol * .62), Math.max(t0 + .13, t0 + dur - .08));
                 g.gain.linearRampToValueAtTime(0, t0 + dur);
                 f.connect(g); g.connect(ctx.destination);
-                ['sawtooth', 'square'].forEach((tipo, i) => {
+                [['sawtooth', 0, 1], ['square', 5, .36], ['triangle', 1200, .22]].forEach(([tipo, detune, nivel]) => {
                     const o = ctx.createOscillator();
-                    o.type = tipo; o.frequency.value = freq; o.detune.value = i * 6;
-                    o.connect(f); o.start(t0); o.stop(t0 + dur + .02);
+                    const mezcla = ctx.createGain();
+                    o.type = tipo; o.frequency.value = freq; o.detune.value = detune;
+                    mezcla.gain.value = nivel; o.connect(mezcla); mezcla.connect(f);
+                    o.start(t0); o.stop(t0 + dur + .02);
                 });
             }
             function fanfarria() {
                 if (!ctx) return;
                 const t = ctx.currentTime + .05;
-                [[392, 0, .16], [392, .2, .16], [392, .4, .16], [523.25, .62, .55], [659.25, 1.25, .25]].forEach(([f, d, l]) => nota(f, t + d, l));
-                [[784, 1.55, 1.1], [659.25, 1.55, 1.1], [523.25, 1.55, 1.1]].forEach(([f, d, l]) => nota(f, t + d, l, .12));
+                // Cuatro llamadas de trompeta y un acorde final, sincronizados con los estandartes.
+                [[392, .9, .22], [493.88, 1.3, .22], [587.33, 1.7, .22], [783.99, 2.1, .34]].forEach(([f, d, l]) => nota(f, t + d, l, .2));
+                [[523.25, 2.1, .34], [659.25, 2.1, .34]].forEach(([f, d, l]) => nota(f, t + d, l, .13));
             }
 
             const musica = new Audio(CONFIG.cancion);
@@ -328,8 +345,8 @@
                 if (iniciado) return;
                 iniciado = true;
                 iniciaAudio(); ir('intro'); fanfarria();
-                espera(650, () => { rafaga('.trompeta.izq'); rafaga('.trompeta.der'); });
-                espera(1600, () => { rafaga('.trompeta.izq'); rafaga('.trompeta.der'); });
+                espera(950, () => { rafaga('.trompeta.izq'); rafaga('.trompeta.der'); });
+                espera(1750, () => { rafaga('.trompeta.izq'); rafaga('.trompeta.der'); });
                 // La secuencia de trompetas termina a los 2.5 s (.7 s + 4 × .45 s).
                 espera(2500, () => {
                     iniciaMusica();
@@ -394,7 +411,15 @@
                 else cerrarCarta();
             });
             $('#fotos').addEventListener('click', e => {
-                const im = e.target.closest('.pol img');
+                const foto = e.target.closest('.pol');
+                if (!foto || foto.disabled) return;
+                if (foto.classList.contains('por-descubrir')) {
+                    foto.classList.remove('por-descubrir');
+                    foto.classList.add('revelada');
+                    foto.setAttribute('aria-label', `Ampliar foto ${foto.dataset.indice}`);
+                    return;
+                }
+                const im = foto.querySelector('img');
                 if (!im) return;
                 abrirVisor(im);
             });
