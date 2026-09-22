@@ -1,9 +1,10 @@
         :root {
-            --celeste: #75AADB;
-            --marino: #1F4E79;
-            --oro: #F6B40E;
-            --rosa: #E0457B;
-            --crema: #FFF8EC;
+            --celeste: #3E6E8E;
+            --marino: #173A57;
+            --oro: #B8923A;
+            --rosa: #A8556A;
+            --salvia: #6E8B5E;
+            --crema: #F4ECD8;
         }
 
         * {
@@ -22,7 +23,7 @@
         body {
             font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
             color: var(--marino);
-            background: #CFE6F7
+            background: var(--crema)
         }
 
         button {
@@ -49,7 +50,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity .9s ease, visibility .9s;
-            background: linear-gradient(180deg, #CFE6F7 0%, #EAF4FB 55%, var(--crema) 100%)
+            background: linear-gradient(180deg, #F4ECD8 0%, #F8F3E8 55%, var(--crema) 100%)
         }
 
         .etapa::before {
@@ -70,9 +71,9 @@
         #jardin {
             isolation: isolate;
             background:
-                radial-gradient(circle at 82% 16%, rgba(255, 238, 170, .88) 0 6%, transparent 16%),
+                radial-gradient(circle at 82% 16%, rgba(184, 146, 58, .24) 0 6%, transparent 16%),
                 radial-gradient(ellipse at 18% 26%, rgba(255, 255, 255, .72) 0 7%, transparent 15%),
-                linear-gradient(180deg, #9ed7f4 0%, #dff2fa 48%, #f8f4d6 100%)
+                linear-gradient(180deg, #D9E3E4 0%, #EEF1EB 48%, #F4ECD8 100%)
         }
 
         #jardin::before {
@@ -183,7 +184,7 @@
             padding: 4px 22px;
             border-radius: 40px;
             font-weight: 800;
-            box-shadow: 0 4px 0 #d69a00;
+            box-shadow: 0 4px 0 #806526;
             opacity: 0
         }
 
@@ -341,8 +342,8 @@
             right: 0;
             bottom: 0;
             height: 3vh;
-            background: linear-gradient(180deg, #a9d8a6 0%, #78b97d 100%);
-            box-shadow: 0 -5px 12px rgba(63, 131, 71, .16);
+            background: linear-gradient(180deg, #8BA47A 0%, #6E8B5E 100%);
+            box-shadow: 0 -5px 12px rgba(23, 58, 87, .16);
             z-index: 2
         }
 
@@ -383,6 +384,11 @@
             transform-box: fill-box;
             transform-origin: 50% 100%;
             animation: mece-ramo 7s -3.5s ease-in-out infinite alternate
+        }
+
+        #escena .flor-referencia,
+        #escena .ramo-asset {
+            filter: saturate(.78) contrast(.96) sepia(.08)
         }
 
         @media (hover: hover) {
@@ -537,11 +543,11 @@
             width: 100%;
             aspect-ratio: 1/1;
             object-fit: cover;
-            background: #dbe9f5
+            background: #E5E2D8
         }
 
         .pol .ph-i {
-            background: linear-gradient(135deg, #BFDDF5, #F8D3E0);
+            background: linear-gradient(135deg, #D9E3E4, #E8D4D5);
             display: grid;
             place-items: center;
             font-size: 12px;
@@ -669,7 +675,7 @@
             margin: 0 -8px;
             position: relative;
             z-index: 2;
-            background: linear-gradient(#7a4a20, #d9a866 45%, #6b3f18);
+            background: linear-gradient(#6D5032, #B8923A 45%, #4B3725);
             box-shadow: 0 4px 8px rgba(0, 0, 0, .35)
         }
 
@@ -678,7 +684,7 @@
             overflow: hidden;
             margin: 0 4px;
             transition: max-height 1.6s cubic-bezier(.3, .7, .2, 1);
-            background: radial-gradient(ellipse at center, #fdf3d6 0%, #f4e2b4 70%, #e7cf96 100%);
+            background: radial-gradient(ellipse at center, #FBF7EC 0%, #F4ECD8 70%, #DCCDAA 100%);
             box-shadow: inset 0 0 36px rgba(140, 100, 40, .35), 0 6px 18px rgba(0, 0, 0, .25)
         }
 
@@ -696,7 +702,7 @@
             padding: 22px 24px 26px;
             font-family: Georgia, "Times New Roman", serif;
             font-style: italic;
-            color: #4a3520;
+            color: #44382B;
             line-height: 1.75;
             font-size: clamp(16px, 4.3vw, 19px)
         }
@@ -714,7 +720,7 @@
             font-size: 1.35em;
             margin-bottom: .6em;
             font-style: normal;
-            color: #8a2c48;
+            color: #743B4D;
             text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.55)
         }
 
@@ -729,7 +735,7 @@
 
         .contenido .firma {
             font-size: 1.25em;
-            color: #8a2c48;
+            color: #743B4D;
             text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.55)
         }
 
@@ -743,7 +749,7 @@
             font: 700 20px Georgia, serif;
             font-style: normal;
             color: var(--oro);
-            background: radial-gradient(circle at 35% 30%, #d94b5b, #8f1d2c);
+            background: radial-gradient(circle at 35% 30%, #B86C73, #743B4D);
             box-shadow: 0 2px 6px rgba(0, 0, 0, .4)
         }
 

@@ -26,6 +26,8 @@ Edite el objeto `CONFIG`, situado al inicio de [`assets/js/app.js`](assets/js/ap
 - `carta` define el encabezado, párrafos, despedida y firma del pergamino.
 - `cancion` define la ruta del audio de fondo. Si no se desea música, elimine o adapte esa parte de la configuración y de la lógica de audio.
 
+La interfaz usa una paleta editorial de baja saturación: azul petróleo `#3E6E8E`, marino `#173A57`, dorado antiguo `#B8923A`, terracota `#A8556A`, verde salvia `#6E8B5E` y marfil `#F4ECD8`.
+
 Mantenga exactamente las mayúsculas y minúsculas de los nombres de archivo: los servidores web suelen distinguirlas.
 
 ## Estructura
@@ -53,7 +55,7 @@ Mantenga exactamente las mayúsculas y minúsculas de los nombres de archivo: lo
 ## Estado actual y comprobaciones
 
 - Las 17 rutas de fotos configuradas existen y el JavaScript externo supera la comprobación de sintaxis.
-- La música de fondo usa `audio/bff.m4a`, una versión más ligera; conserve esa ruta o actualice `CONFIG.cancion` si sustituye el archivo.
+- La música de fondo usa `audio/bff.m4a`, una versión más ligera; conserve esa ruta o actualice `CONFIG.cancion` si sustituye el archivo. `audio/bff.webm` se conserva como respaldo.
 - El contenido de la carta conserva textos de plantilla (`[Escribe aquí…]` y `[Tu nombre]`); debe personalizarse antes de compartir la tarjeta.
 - Los metadatos Open Graph y la URL canónica ya apuntan a la publicación de GitHub Pages; cámbielos si el repositorio o el dominio se mueven.
 

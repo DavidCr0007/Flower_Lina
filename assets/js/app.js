@@ -52,12 +52,12 @@
                ===================================================================== */
             function girasol(cx, cy, r) {
                 let s = `<g transform="translate(${cx} ${cy})">`, N = 20;
-                for (let k = 0; k < N; k++) s += `<ellipse cx="0" cy="${f2(-r * .72)}" rx="${f2(r * .17)}" ry="${f2(r * .36)}" fill="#F2A900" transform="rotate(${f2(k * 360 / N + 9)})"/>`;
-                for (let k = 0; k < N; k++) s += `<ellipse cx="0" cy="${f2(-r * .76)}" rx="${f2(r * .17)}" ry="${f2(r * .38)}" fill="#FFC928" transform="rotate(${f2(k * 360 / N)})"/>`;
-                s += `<circle r="${f2(r * .46)}" fill="#5B3A1E"/><circle r="${f2(r * .34)}" fill="#7A4A22"/>`;
+                for (let k = 0; k < N; k++) s += `<ellipse cx="0" cy="${f2(-r * .72)}" rx="${f2(r * .17)}" ry="${f2(r * .36)}" fill="#B8923A" transform="rotate(${f2(k * 360 / N + 9)})"/>`;
+                for (let k = 0; k < N; k++) s += `<ellipse cx="0" cy="${f2(-r * .76)}" rx="${f2(r * .17)}" ry="${f2(r * .38)}" fill="#D1B365" transform="rotate(${f2(k * 360 / N)})"/>`;
+                s += `<circle r="${f2(r * .46)}" fill="#5B4630"/><circle r="${f2(r * .34)}" fill="#7A5A35"/>`;
                 for (let k = 1; k <= 46; k++) {
                     const rr = r * .44 * Math.sqrt(k / 46), a = k * 2.39996;
-                    s += `<circle cx="${f2(rr * Math.cos(a))}" cy="${f2(rr * Math.sin(a))}" r="${f2(r * .028)}" fill="#3B2412"/>`;
+                    s += `<circle cx="${f2(rr * Math.cos(a))}" cy="${f2(rr * Math.sin(a))}" r="${f2(r * .028)}" fill="#3B2E20"/>`;
                 }
                 return s + '</g>';
             }
@@ -69,26 +69,26 @@
                     d += `L${f2(rr * Math.cos(t))} ${f2(rr * Math.sin(t))}`;
                 }
                 return `<g transform="translate(${cx} ${cy})">
-    <circle r="${f2(r)}" fill="#D81B60"/><circle r="${f2(r * .86)}" fill="#E5507F"/>
-    <path d="${d}" fill="none" stroke="#A3124A" stroke-width="${f2(r * .07)}" stroke-linecap="round" opacity=".85"/>
-    <path d="M${P(-r * .62, -r * .35)} Q${P(-r * .2, -r * .95, r * .5, -r * .6)}" fill="none" stroke="#FF9DB9" stroke-width="${f2(r * .09)}" stroke-linecap="round" opacity=".7"/>
+    <circle r="${f2(r)}" fill="#A8556A"/><circle r="${f2(r * .86)}" fill="#C47E8E"/>
+    <path d="${d}" fill="none" stroke="#743B4D" stroke-width="${f2(r * .07)}" stroke-linecap="round" opacity=".85"/>
+    <path d="M${P(-r * .62, -r * .35)} Q${P(-r * .2, -r * .95, r * .5, -r * .6)}" fill="none" stroke="#E0AEB8" stroke-width="${f2(r * .09)}" stroke-linecap="round" opacity=".7"/>
   </g>`;
             }
 
             function tulipan(cx, cy, w, h, rot) {
                 return `<g transform="translate(${cx} ${cy}) rotate(${rot})">
-    <path d="M0 0 C${P(-w * .62, -h * .1, -w * .55, -h * .8, -w * .2, -h)} C${P(-w * .08, -h * .65, -w * .04, -h * .3, 0, 0)}Z" fill="#E8563A"/>
-    <path d="M0 0 C${P(w * .62, -h * .1, w * .55, -h * .8, w * .2, -h)} C${P(w * .08, -h * .65, w * .04, -h * .3, 0, 0)}Z" fill="#E8563A"/>
-    <path d="M${P(-w * .32, -h * .04)} C${P(-w * .38, -h * .6, -w * .16, -h * .98, 0, -h * 1.08)} C${P(w * .16, -h * .98, w * .38, -h * .6, w * .32, -h * .04)} Q0 ${f2(h * .08)} ${P(-w * .32, -h * .04)}Z" fill="#FF8467"/>
+    <path d="M0 0 C${P(-w * .62, -h * .1, -w * .55, -h * .8, -w * .2, -h)} C${P(-w * .08, -h * .65, -w * .04, -h * .3, 0, 0)}Z" fill="#6F3547"/>
+    <path d="M0 0 C${P(w * .62, -h * .1, w * .55, -h * .8, w * .2, -h)} C${P(w * .08, -h * .65, w * .04, -h * .3, 0, 0)}Z" fill="#6F3547"/>
+    <path d="M${P(-w * .32, -h * .04)} C${P(-w * .38, -h * .6, -w * .16, -h * .98, 0, -h * 1.08)} C${P(w * .16, -h * .98, w * .38, -h * .6, w * .32, -h * .04)} Q0 ${f2(h * .08)} ${P(-w * .32, -h * .04)}Z" fill="#A8556A"/>
   </g>`;
             }
 
             const tallo = (x, y, tx, ty, ancho = 4) => {
                 const dy = ty - y;
-                return `<path d="M${P(x, y)} C${P(x, y + dy * .5, tx, ty - dy * .3, tx, ty)}" fill="none" stroke="#3F8347" stroke-width="${ancho}" stroke-linecap="round"/>`;
+                return `<path d="M${P(x, y)} C${P(x, y + dy * .5, tx, ty - dy * .3, tx, ty)}" fill="none" stroke="#526F49" stroke-width="${ancho}" stroke-linecap="round"/>`;
             };
             const hoja = (cx, cy, l, rot) =>
-                `<path d="M0 0 C${P(l * .3, -l * .35, l * .75, -l * .3, l, 0)} C${P(l * .75, l * .3, l * .3, l * .35, 0, 0)}Z" fill="#4E9F5D" transform="translate(${cx} ${cy}) rotate(${rot})"/>`;
+                `<path d="M0 0 C${P(l * .3, -l * .35, l * .75, -l * .3, l, 0)} C${P(l * .75, l * .3, l * .3, l * .35, 0, 0)}Z" fill="#6E8B5E" transform="translate(${cx} ${cy}) rotate(${rot})"/>`;
             const crece = (html, d, s) => `<g class="crece" style="--d:${d}s"><g class="mece" style="--s:${s}s">${html}</g></g>`;
 
             function girasolCompleto(cx, cy, r, tx, ty, d, s) {
@@ -103,7 +103,7 @@
                 const y = baseY - h;
                 const cx = f2(x + w / 2), cy = f2(y + h);
                 return crece(
-                    `<image href="${src}" x="${x}" y="${y}" width="${w}" height="${h}" ` +
+                    `<image class="flor-referencia" href="${src}" x="${x}" y="${y}" width="${w}" height="${h}" ` +
                     `preserveAspectRatio="xMidYMid meet" transform="rotate(${rot} ${cx} ${cy})"/>`, d, s
                 );
             }
@@ -122,14 +122,14 @@
             }
 
             const TROMPETA = `<svg viewBox="0 0 190 130" aria-hidden="true">
-  <path d="M18 58 H131" fill="none" stroke="#E8A51A" stroke-width="12" stroke-linecap="round"/>
-  <path d="M42 58 C31 13 105 13 94 58" fill="none" stroke="#F8C84E" stroke-width="7" stroke-linecap="round"/>
-  <path d="M126 47 L175 18 Q184 63 175 108 L126 72 Z" fill="#F6B40E" stroke="#B97908" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M140 45 L166 30 Q170 61 166 91 L140 76 Z" fill="#FFD76B" opacity=".72"/>
-  <g fill="#B97908"><circle cx="61" cy="58" r="5"/><circle cx="76" cy="58" r="5"/><circle cx="91" cy="58" r="5"/></g>
-  <path d="M76 68 H121 L115 113 L99 103 L83 113 Z" fill="#7E2345" stroke="#F6C34A" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M91 86 L96 77 L101 86 L106 75 L111 86 V94 H91 Z" fill="#F8D05B"/>
-  <path d="M22 51 L29 43 L35 51" fill="none" stroke="#FFF3B8" stroke-width="3" stroke-linecap="round"/>
+  <path d="M18 58 H131" fill="none" stroke="#B8923A" stroke-width="12" stroke-linecap="round"/>
+  <path d="M42 58 C31 13 105 13 94 58" fill="none" stroke="#D6B66A" stroke-width="7" stroke-linecap="round"/>
+  <path d="M126 47 L175 18 Q184 63 175 108 L126 72 Z" fill="#B8923A" stroke="#806526" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M140 45 L166 30 Q170 61 166 91 L140 76 Z" fill="#D6B66A" opacity=".72"/>
+  <g fill="#806526"><circle cx="61" cy="58" r="5"/><circle cx="76" cy="58" r="5"/><circle cx="91" cy="58" r="5"/></g>
+  <path d="M76 68 H121 L115 113 L99 103 L83 113 Z" fill="#6E8B5E" stroke="#B8923A" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M91 86 L96 77 L101 86 L106 75 L111 86 V94 H91 Z" fill="#E0C889"/>
+  <path d="M22 51 L29 43 L35 51" fill="none" stroke="#F4ECD8" stroke-width="3" stroke-linecap="round"/>
 </svg>`;
 
             /* =====================================================================
@@ -143,13 +143,13 @@
             $('#dedicatoria').textContent = CONFIG.dedicatoria;
             document.querySelectorAll('.trompeta').forEach(t => t.innerHTML = TROMPETA);
 
-            const ramo = `<image href="${FLORES.ramo}" x="12" y="170" width="376" height="503" preserveAspectRatio="xMidYMid meet"/>`;
+            const ramo = `<image class="ramo-asset" href="${FLORES.ramo}" x="12" y="170" width="376" height="503" preserveAspectRatio="xMidYMid meet"/>`;
 
             $('#escena').innerHTML = `
-  <path d="M0 700 V670 Q50 656 110 668 T230 664 T340 668 T400 662 V700Z" fill="#A9D8A6"/>
-  <path d="M0 700 V684 Q70 674 140 684 T280 682 T400 680 V700Z" fill="#8CC58D"/>
-  <path d="M0 681 Q74 670 140 681 T280 679 T400 677" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="3"/>
-  <ellipse cx="200" cy="665" rx="118" ry="13" fill="rgba(63,131,71,.16)"/>
+  <path d="M0 700 V670 Q50 656 110 668 T230 664 T340 668 T400 662 V700Z" fill="#8BA47A"/>
+  <path d="M0 700 V684 Q70 674 140 684 T280 682 T400 680 V700Z" fill="#6E8B5E"/>
+  <path d="M0 681 Q74 670 140 681 T280 679 T400 677" fill="none" stroke="rgba(244,236,216,.52)" stroke-width="3"/>
+  <ellipse cx="200" cy="665" rx="118" ry="13" fill="rgba(23,58,87,.16)"/>
   ${florDeReferencia(FLORES.girasol1, -62, 664, 206, 307, .3, -.5, -3)}
   ${florDeReferencia(FLORES.girasol2, 252, 660, 198, 295, .5, -1.5, 3)}
   ${florDeReferencia(FLORES.girasol3, 115, 658, 170, 253, .7, -2.5)}
@@ -163,7 +163,7 @@
   <g id="pista" pointer-events="none">
     <circle class="pulso" cx="200" cy="450" r="100" fill="none" stroke="#fff" stroke-width="4"/>
     <rect x="135" y="316" width="130" height="30" rx="15" fill="#fff" opacity=".92"/>
-    <text x="200" y="336" text-anchor="middle" font-size="15" font-weight="700" fill="#1F4E79">Toca el ramo</text>
+    <text x="200" y="336" text-anchor="middle" font-size="15" font-weight="700" fill="#173A57">Toca el ramo</text>
   </g>`;
 
             /* Fotos al fondo del jardín, en anillo alrededor del ramo */
@@ -201,7 +201,7 @@
             });
 
             /* Pétalos cayendo */
-            const colPetalos = ['#E0457B', '#F48FB1', '#F6B40E', '#FF8467'];
+            const colPetalos = ['#A8556A', '#C47E8E', '#B8923A', '#8D5B5D'];
             for (let i = 0; i < 14; i++) {
                 const p = document.createElement('i');
                 p.className = 'petalo';
@@ -235,7 +235,7 @@
                 cx.setTransform(d, 0, 0, d, 0, 0);
             };
             addEventListener('resize', ajusta); ajusta();
-            const COLS = ['#75AADB', '#ffffff', '#F6B40E', '#E0457B', '#FF8467', '#9CCC9F'];
+            const COLS = ['#3E6E8E', '#F4ECD8', '#B8923A', '#A8556A', '#8D5B5D', '#6E8B5E'];
 
             function estallido(x, y, dir = 0, n = 90) {
                 const N = reducido ? Math.min(n, 25) : n;
