@@ -25,6 +25,7 @@ Edite el objeto `CONFIG`, situado al inicio de [`assets/js/app.js`](assets/js/ap
 - `revelarFotosAlTocar` controla la privacidad inicial de la galería: con `true`, el primer toque revela una foto y el siguiente la amplía; con `false`, se muestran desde el inicio.
 - `carta` define el encabezado, párrafos, despedida y firma del pergamino.
 - `cancion` define la ruta del audio de fondo. Si no se desea música, elimine o adapte esa parte de la configuración y de la lógica de audio.
+- `volumenMusica` controla la ganancia interna de la aplicación. Se limita automáticamente entre 0.50 y 0.75; `0.65` es el valor recomendado.
 
 La interfaz usa una paleta editorial de baja saturación: azul petróleo `#3E6E8E`, marino `#173A57`, dorado antiguo `#B8923A`, terracota `#A8556A`, verde salvia `#6E8B5E` y marfil `#F4ECD8`.
 

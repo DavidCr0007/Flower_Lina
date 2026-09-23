@@ -10,6 +10,7 @@
                 titulo: "¡Feliz cumpleaños!",
                 dedicatoria: "Para mi 10",
                 cancion: "audio/bff.m4a",              // audio optimizado para una carga más rápida
+                volumenMusica: 0.65,                    // volumen interno: 0.50–0.75 (65% recomendado)
                 fotos: [                               // entre 7 y 15; si falta un archivo se muestra un marco vacío
                     "Imagenes/Foto_1.jpg", "Imagenes/Foto_2.jpg", "Imagenes/Foto_3.jpg", "Imagenes/Foto_4.jpg", "Imagenes/Foto_5.jpg",
                     "Imagenes/Foto_6.jpg", "Imagenes/Foto_7.jpg", "Imagenes/Foto_8.jpg", "Imagenes/Foto_9.jpg", "Imagenes/Foto_10.jpg",
@@ -301,6 +302,9 @@
             const musica = new Audio(CONFIG.cancion);
             musica.loop = true; musica.preload = 'metadata';
             const btnMusica = $('#musica');
+            // El navegador no puede leer ni modificar el volumen físico del dispositivo.
+            // `volume` define la ganancia de la aplicación y el sistema la combina con su volumen actual.
+            const volumenMusica = Math.min(.75, Math.max(.5, Number(CONFIG.volumenMusica) || .65));
             let sonando = false, audioDisponible = Boolean(CONFIG.cancion);
             musica.addEventListener('error', () => {
                 audioDisponible = false;
@@ -319,7 +323,11 @@
                     btnMusica.hidden = false;
                     actualizaBotonMusica();
                     let v = 0;
-                    const t = setInterval(() => { v = Math.min(.85, v + .05); musica.volume = v; if (v >= .85) clearInterval(t); }, 120);
+                    const t = setInterval(() => {
+                        v = Math.min(volumenMusica, v + .05);
+                        musica.volume = v;
+                        if (v >= volumenMusica) clearInterval(t);
+                    }, 120);
                 }).catch(() => { sonando = false; });
             }
             btnMusica.addEventListener('click', () => {
