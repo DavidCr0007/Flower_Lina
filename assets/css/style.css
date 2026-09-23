@@ -333,7 +333,9 @@
         #fotos {
             position: absolute;
             inset: 0;
-            z-index: 1
+            /* Las fotos son la capa superior del jardín; solo sus tarjetas capturan taps. */
+            z-index: 4;
+            pointer-events: none
         }
 
         .suelo {
@@ -440,7 +442,8 @@
             font: inherit;
             color: inherit;
             text-align: inherit;
-            overflow: hidden
+            overflow: hidden;
+            pointer-events: auto
         }
 
         .pol img {
