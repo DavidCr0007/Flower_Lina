@@ -159,7 +159,6 @@
   ${balon(72, 664, 18)}
   <g id="ramo" role="button" tabindex="0" aria-label="Abrir la carta">
     ${ramo}
-    <rect x="48" y="250" width="304" height="340" fill="transparent"/>
   </g>
   <g id="pista" pointer-events="none">
     <circle class="pulso" cx="200" cy="450" r="100" fill="none" stroke="#fff" stroke-width="4"/>

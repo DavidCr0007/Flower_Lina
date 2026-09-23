@@ -379,11 +379,18 @@
         }
 
         #escena #ramo {
+            /* Solo la parte visible del PNG recibe el tap; no bloquea las fotos. */
             pointer-events: auto;
+            pointer-events: visiblePainted;
             cursor: pointer;
             transform-box: fill-box;
             transform-origin: 50% 100%;
             animation: mece-ramo 7s -3.5s ease-in-out infinite alternate
+        }
+
+        #escena .ramo-asset {
+            pointer-events: auto;
+            pointer-events: visiblePainted
         }
 
         #escena .flor-referencia,
