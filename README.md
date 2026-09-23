@@ -51,6 +51,7 @@ Mantenga exactamente las mayúsculas y minúsculas de los nombres de archivo: lo
 - Se respeta `prefers-reduced-motion` para reducir las animaciones.
 - Las fotografías pueden ampliarse al seleccionarlas.
 - El jardín usa los PNG transparentes de `Flores/`, incluido `Ramo.png` como elemento central interactivo.
+- El fondo del jardín se rellena con una capa decorativa de tulipanes y girasoles, con opacidad y movimiento suaves para no competir con las fotos.
 - En equipos táctiles, los controles mantienen objetivos de al menos 44 px y se ajustan el contenido y la carta para pantallas estrechas u horizontales.
 
 ## Estado actual y comprobaciones

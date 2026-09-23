@@ -156,7 +156,7 @@
   ${florDeReferencia(FLORES.girasol3, 115, 658, 170, 253, .7, -2.5)}
   ${florDeReferencia(FLORES.tulipan, 22, 662, 128, 191, .9, -3, -7)}
   ${florDeReferencia(FLORES.rosa, 254, 663, 128, 191, 1, -3.5, 6)}
-  ${balon(72, 664, 18)}
+            ${balon(72, 664, 18)}
   <g id="ramo" role="button" tabindex="0" aria-label="Abrir la carta">
     ${ramo}
   </g>
@@ -165,6 +165,23 @@
     <rect x="135" y="316" width="130" height="30" rx="15" fill="#fff" opacity=".92"/>
     <text x="200" y="336" text-anchor="middle" font-size="15" font-weight="700" fill="#173A57">Toca el ramo</text>
   </g>`;
+
+            /* Flores decorativas de fondo: se mantienen detrás de la escena principal. */
+            const fondoFlores = [
+                [4, 'girasol1', 1.05, -5], [13, 'tulipan', .62, -7], [22, 'girasol2', .7, 4],
+                [31, 'tulipan', .56, 6], [40, 'girasol3', .62, -4], [51, 'tulipan', .58, -5],
+                [61, 'girasol1', .72, 5], [70, 'tulipan', .6, -4], [79, 'girasol2', .68, 4],
+                [88, 'tulipan', .58, 7], [97, 'girasol3', .94, -4]
+            ];
+            const contFondo = $('#fondo-flores');
+            fondoFlores.forEach(([left, tipo, escala, rot], i) => {
+                const img = document.createElement('img');
+                img.className = 'flor-fondo';
+                img.alt = '';
+                img.src = FLORES[tipo];
+                img.style.cssText = `left:${left}%;--escala:${escala};--rot:${rot}deg;--i:${i};`;
+                contFondo.appendChild(img);
+            });
 
             /* Fotos al fondo del jardín, en anillo alrededor del ramo */
             const nF = CONFIG.fotos.length;

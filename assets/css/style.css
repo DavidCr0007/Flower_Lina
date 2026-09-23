@@ -326,6 +326,40 @@
             opacity: 0
         }
 
+        #fondo-flores {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none
+        }
+
+        .flor-fondo {
+            position: absolute;
+            bottom: 2.5%;
+            width: clamp(64px, 9vw, 126px);
+            height: auto;
+            transform-origin: 50% 100%;
+            transform: translateX(-50%) scale(var(--escala)) rotate(var(--rot));
+            opacity: 0;
+            filter: saturate(.66) sepia(.1) brightness(.96);
+            animation: mece-fondo 7s calc(var(--i) * -.55s) ease-in-out infinite alternate
+        }
+
+        #jardin.activa .flor-fondo {
+            animation: aparece-fondo .9s calc(.45s + var(--i) * .08s) both, mece-fondo 7s calc(var(--i) * -.55s) ease-in-out .9s infinite alternate
+        }
+
+        @keyframes aparece-fondo {
+            from { opacity: 0; transform: translateX(-50%) scale(calc(var(--escala) * .82)) rotate(var(--rot)) }
+            to { opacity: .42; transform: translateX(-50%) scale(var(--escala)) rotate(var(--rot)) }
+        }
+
+        @keyframes mece-fondo {
+            from { margin-bottom: -2px }
+            to { margin-bottom: 3px }
+        }
+
         #jardin.activa #dedicatoria {
             animation: sube-txt 1s .8s both
         }
@@ -867,6 +901,15 @@
             .contenido {
                 padding: 20px 20px 24px;
                 line-height: 1.65
+            }
+
+            .flor-fondo {
+                width: clamp(50px, 15vw, 82px);
+                bottom: 2%
+            }
+
+            .flor-fondo:nth-child(3n) {
+                opacity: .28
             }
         }
 
