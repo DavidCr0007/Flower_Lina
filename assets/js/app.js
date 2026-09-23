@@ -168,10 +168,12 @@
 
             /* Flores decorativas de fondo: se mantienen detrás de la escena principal. */
             const fondoFlores = [
-                [4, 'girasol1', 1.05, -5], [13, 'tulipan', .62, -7], [22, 'girasol2', .7, 4],
-                [31, 'tulipan', .56, 6], [40, 'girasol3', .62, -4], [51, 'tulipan', .58, -5],
-                [61, 'girasol1', .72, 5], [70, 'tulipan', .6, -4], [79, 'girasol2', .68, 4],
-                [88, 'tulipan', .58, 7], [97, 'girasol3', .94, -4]
+                [2, 'girasol1', .92, -5], [7, 'tulipan', .5, -7], [12, 'girasol2', .68, 4],
+                [18, 'tulipan', .55, 6], [24, 'girasol3', .76, -4], [30, 'tulipan', .5, -5],
+                [36, 'girasol1', .62, 5], [42, 'tulipan', .56, -4], [48, 'girasol2', .7, 4],
+                [54, 'tulipan', .5, 7], [60, 'girasol3', .64, -4], [66, 'tulipan', .56, -6],
+                [72, 'girasol1', .72, 5], [78, 'tulipan', .5, -4], [84, 'girasol2', .7, 4],
+                [90, 'tulipan', .56, 7], [96, 'girasol3', .9, -4], [99, 'tulipan', .5, 5]
             ];
             const contFondo = $('#fondo-flores');
             fondoFlores.forEach(([left, tipo, escala, rot], i) => {

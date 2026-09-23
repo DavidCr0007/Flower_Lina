@@ -329,7 +329,7 @@
         #fondo-flores {
             position: absolute;
             inset: 0;
-            z-index: 1;
+            z-index: 2;
             overflow: hidden;
             pointer-events: none
         }
@@ -341,7 +341,7 @@
             height: auto;
             transform-origin: 50% 100%;
             transform: translateX(-50%) scale(var(--escala)) rotate(var(--rot));
-            opacity: 0;
+            opacity: .3;
             filter: saturate(.66) sepia(.1) brightness(.96);
             animation: mece-fondo 7s calc(var(--i) * -.55s) ease-in-out infinite alternate
         }
